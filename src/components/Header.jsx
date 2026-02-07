@@ -60,29 +60,22 @@ const Header = () => {
             </div>
 
             {/* Mobile Nav */}
-            <AnimatePresence>
-                {isMobileMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
-                    >
-                        <nav className="flex flex-col p-4 space-y-4 items-center mb-4">
-                            {navLinks.map((link) => (
-                                <a
-                                    key={link.label}
-                                    href={link.href}
-                                    className="text-text-dark font-medium hover:text-champagne-gold"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    {link.label}
-                                </a>
-                            ))}
-                        </nav>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {isMobileMenuOpen && (
+                <div className="md:hidden bg-white border-t border-gray-100 overflow-hidden">
+                    <nav className="flex flex-col p-4 space-y-4 items-center mb-4">
+                        {navLinks.map((link) => (
+                            <a
+                                key={link.label}
+                                href={link.href}
+                                className="text-text-dark font-medium hover:text-champagne-gold"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                {link.label}
+                            </a>
+                        ))}
+                    </nav>
+                </div>
+            )}
         </header>
     );
 };

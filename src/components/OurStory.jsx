@@ -6,11 +6,7 @@ const OurStory = () => {
         <section id="story" className="min-h-screen flex items-center py-20 bg-white">
             <div className="container mx-auto px-4">
                 <div className="flex flex-col md:flex-row items-center gap-12">
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
+                    <div
                         className="md:w-1/2 aspect-[4/5] bg-gray-100 relative overflow-hidden rounded-sm"
                     >
                         {/* Placeholder for Couple Photo */}
@@ -19,13 +15,9 @@ const OurStory = () => {
                         </div>
                         <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-champagne-gold/20 -z-10" />
                         <div className="absolute -top-4 -left-4 w-32 h-32 border border-champagne-gold/30 -z-10" />
-                    </motion.div>
+                    </div>
 
-                    <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
+                    <div
                         className="md:w-1/2 text-center md:text-left"
                     >
                         <h2 className="font-serif text-4xl md:text-5xl mb-6 text-text-dark">Nossa História</h2>
@@ -37,7 +29,7 @@ const OurStory = () => {
                         <p className="text-text-muted leading-relaxed font-light">
                             Hoje, ao olharmos para trás, não vemos uma sucessão de coincidências, mas o soberano agir de Deus orquestrando cada detalhe. Entendemos que Ele nos permitiu crescer no mesmo jardim para que, no tempo d'Ele, florescêssemos juntos. Nossa união não é fruto do acaso, mas o cumprimento de um propósito do Senhor, que nos preparou um para o outro para caminharmos sob a Sua bênção.
                         </p>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>
