@@ -4,7 +4,7 @@ import { cn } from '../lib/utils';
 
 const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    /*     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); */
 
     useEffect(() => {
         const handleScroll = () => {
@@ -50,12 +50,12 @@ const Header = () => {
                 </nav>
 
                 {/* Mobile Menu Button */}
-                <button
+                {/* <button
                     className="md:hidden text-text-dark"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
                     {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
+                </button> */}
             </div>
 
             {/* Mobile Nav */}
