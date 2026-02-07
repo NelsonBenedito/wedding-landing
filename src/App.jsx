@@ -1,46 +1,29 @@
 import React from 'react';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import OurStory from './components/OurStory';
-import Ceremony from './components/Ceremony';
-import Registry from './components/Registry';
-import RSVP from './components/RSVP';
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import ErrorBoundary from './components/ErrorBoundary';
-
+// Minimal test version - no external dependencies
 function App() {
   return (
-    <ErrorBoundary>
-      <Router>
-        <Routes>
-          <Route path="/" element={
-            <div className="min-h-screen bg-wedding-white font-sans text-text-dark selection:bg-champagne-gold selection:text-white">
-              <Header />
-              <main>
-                <Hero />
-                <OurStory />
-                <Ceremony />
-                <Registry />
-                <RSVP />
-              </main>
-
-              <footer className="bg-text-dark text-white py-12 text-center">
-                <p className="font-serif text-2xl mb-4">Sarah & Nelson</p>
-                <p className="text-sm text-gray-400 uppercase tracking-widest mb-6">22 de Agosto de 2026</p>
-                <p className="text-xs text-gray-600">
-                  © {new Date().getFullYear()} Wedding Landing Page. Desenvolvido por <a href="https://github.com/NelsonBenedito" target='_blank' className="text-red-500">Nelson Benedito</a>
-                </p>
-              </footer>
-            </div>
-          } />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-      </Router>
-    </ErrorBoundary>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#FFFEF9',
+      fontFamily: 'sans-serif',
+      textAlign: 'center',
+      padding: '20px'
+    }}>
+      <h1 style={{ fontSize: '2.5rem', color: '#1a1a1a', marginBottom: '1rem' }}>
+        Sarah & Nelson
+      </h1>
+      <p style={{ fontSize: '1.25rem', color: '#D4AF37', marginBottom: '2rem' }}>
+        22 de Agosto de 2026
+      </p>
+      <p style={{ color: '#666' }}>
+        Se você está vendo esta mensagem, o React está funcionando!
+      </p>
+    </div>
   );
 }
 
