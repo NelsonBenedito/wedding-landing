@@ -27,6 +27,9 @@ const RSVP = () => {
             setIsSubmitting(true);
 
             try {
+                if (!supabase) {
+                    throw new Error('Supabase client not initialized');
+                }
                 const { error } = await supabase
                     .from('rsvps')
                     .insert([
@@ -63,6 +66,11 @@ const RSVP = () => {
                     <div className="text-center mb-10">
                         <h2 className="font-serif text-3xl md:text-4xl mb-4 text-text-dark">RSVP</h2>
                         <p className="text-text-muted">Por favor, responda até 1º de Julho de 2026</p>
+                        {!supabase && (
+                            <p className="text-red-500 text-sm mt-4 bg-red-50 p-2 rounded">
+                                RSVP temporariamente indisponível (Chaves de API faltando).
+                            </p>
+                        )}
                     </div>
 
                     {isSuccess ? (
