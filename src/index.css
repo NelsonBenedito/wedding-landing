@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-wedding-white text-text-dark font-sans antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-text-dark;
+  }
+}
+
+.champagne-gradient {
+  background: linear-gradient(135deg, #F3E5AB 0%, #D4AF37 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
