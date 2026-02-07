@@ -1,5 +1,6 @@
 import React from 'react';
 import { MapPin, Clock } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Ceremony = () => {
     return (
@@ -7,14 +8,18 @@ const Ceremony = () => {
             <div className="absolute inset-0 opacity-20 pointer-events-none"></div>
 
             <div className="container mx-auto px-4 text-center z-10 relative">
-                <h2
+                <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     className="font-serif text-4xl md:text-5xl mb-12 text-text-dark"
                 >
                     A Cerimônia e Recepção
-                </h2>
+                </motion.h2>
 
                 <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    <div
+                    <motion.div
+                        whileHover={{ y: -5 }}
                         className="bg-white p-10 shadow-sm border border-champagne-gold/20"
                     >
                         <div className="w-16 h-16 bg-champagne-gold/10 rounded-full flex items-center justify-center mx-auto mb-6 text-champagne-gold">
@@ -24,10 +29,11 @@ const Ceremony = () => {
                         <p className="text-text-dark font-medium">22 de Agosto de 2026</p>
                         <p className="text-text-muted mt-2">Cerimônia: 11:00</p>
                         <p className="text-text-muted">Recepção a seguir</p>
-                    </div>
+                    </motion.div>
 
                     <a href="https://maps.app.goo.gl/83CpDWFnYuHJ6FwZ6" target="_blank" className="inline-block mt-4 text-sm text-champagne-gold border-champagne-gold hover:text-text-dark transition-colors">
-                        <div
+                        <motion.div
+                            whileHover={{ y: -5 }}
                             className="bg-white p-10 shadow-sm border border-champagne-gold/20"
                         >
                             <div className="w-16 h-16 bg-champagne-gold/10 rounded-full flex items-center justify-center mx-auto mb-6 text-champagne-gold">
@@ -38,7 +44,7 @@ const Ceremony = () => {
                             <p className="text-text-muted mt-2">Rodovia Valdir Loureiro de Almeida, Km 65 5 s/n Caldeirão</p>
                             <p className="text-text-muted">Serra dos Pregos, Santa Teresa - ES</p>
                             <p>Ver Mapa</p>
-                        </div>
+                        </motion.div>
                     </a>
                 </div>
             </div>

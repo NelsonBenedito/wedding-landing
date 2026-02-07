@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GiftModal from './GiftModal';
 import { Gift } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const giftItems = [
     { id: 1, title: 'Lua de Mel', price: 100, icon: '✈️' },
@@ -27,8 +28,13 @@ const Registry = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                     {giftItems.map((item, index) => (
-                        <div
+                        <motion.div
                             key={item.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: index * 0.1 }}
+                            whileHover={{ y: -5 }}
                             onClick={() => setSelectedGift(item)}
                             className="bg-wedding-white p-8 text-center border border-gray-100 hover:border-champagne-gold/50 cursor-pointer transition-all shadow-sm hover:shadow-md group"
                         >
@@ -40,7 +46,7 @@ const Registry = () => {
                             <button className="text-xs uppercase tracking-widest border-b border-gray-300 group-hover:border-champagne-gold pb-1 transition-colors">
                                 Presentear
                             </button>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import { motion } from 'framer-motion';
 import { Check, Loader2 } from 'lucide-react';
 
 const RSVP = () => {
@@ -56,7 +57,10 @@ const RSVP = () => {
     return (
         <section id="rsvp" className="min-h-screen flex items-center py-20 bg-champagne-gold/5">
             <div className="container mx-auto px-4 max-w-2xl">
-                <div
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     className="bg-white p-8 md:p-12 shadow-md rounded-sm border-t-4 border-champagne-gold"
                 >
                     <div className="text-center mb-10">
@@ -70,7 +74,9 @@ const RSVP = () => {
                     </div>
 
                     {isSuccess ? (
-                        <div
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
                             className="text-center py-10"
                         >
                             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-600">
@@ -84,7 +90,7 @@ const RSVP = () => {
                             >
                                 Enviar outra resposta
                             </button>
-                        </div>
+                        </motion.div>
                     ) : (
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div>
@@ -158,7 +164,7 @@ const RSVP = () => {
                             </button>
                         </form>
                     )}
-                </div>
+                </motion.div>
             </div>
         </section>
     );
