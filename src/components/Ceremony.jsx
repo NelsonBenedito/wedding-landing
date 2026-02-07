@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 const Ceremony = () => {
     return (
         <section id="ceremony" className="min-h-screen flex items-center py-20 bg-wedding-white relative">
-            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 pointer-events-none"></div>
+            <div className="absolute inset-0 opacity-20 pointer-events-none"></div>
 
             <div className="container mx-auto px-4 text-center z-10 relative">
                 <h2
