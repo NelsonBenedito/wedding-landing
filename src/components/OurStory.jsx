@@ -15,7 +15,7 @@ const OurStory = () => {
                     >
                         {/* Placeholder for Couple Photo */}
                         <div className="absolute inset-0 bg-neutral-200 flex items-center justify-center text-text-muted">
-                            <img src="/us.jpg" alt="Couple" className="w-full h-full object-cover" />
+                            <img src="/us.webp" alt="Couple" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                         </div>
                         <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-champagne-gold/20 -z-10" />
                         <div className="absolute -top-4 -left-4 w-32 h-32 border border-champagne-gold/30 -z-10" />
