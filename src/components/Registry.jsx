@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import GiftModal from './GiftModal';
 import { Gift } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 const giftItems = [
     { id: 1, title: 'Lua de Mel', price: 100, icon: '✈️' },

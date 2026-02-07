@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { X, CreditCard, QrCode } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 const GiftModal = ({ gift, onClose }) => {
     const [activeTab, setActiveTab] = useState('pix'); // 'pix' or 'card'

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { motion } from 'framer-motion';
 import { Check, Loader2 } from 'lucide-react';
 
 const RSVP = () => {
