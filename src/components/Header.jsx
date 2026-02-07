@@ -34,7 +34,7 @@ const Header = () => {
 
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center space-x-8">
-                    {navLinks.map((link) => (
+                    {/* {navLinks.map((link) => (
                         <a
                             key={link.label}
                             href={link.href}
@@ -42,7 +42,7 @@ const Header = () => {
                         >
                             {link.label}
                         </a>
-                    ))}
+                    ))} */}
                     <a href="#rsvp" className="bg-champagne-gold text-white px-6 py-2 rounded-full hover:bg-[#B8860B] transition-colors duration-300 shadow-md">
                         Confirmar Presença
                     </a>
