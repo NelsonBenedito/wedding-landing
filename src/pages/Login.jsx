@@ -32,8 +32,8 @@ export default function Login() {
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
             <div className="w-full max-w-xs">
-                <form onSubmit={handleLogin} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                    <h1 className="text-xl mb-4 font-bold text-center">Admin Login</h1>
+                <form onSubmit={handleLogin} className="bg-white shadow-md text-center rounded px-8 pt-6 pb-8 mb-4">
+                    <h1 className="font-sans text-xl mb-4 font-bold text-center">Acesso restrito</h1>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                             Email
@@ -68,8 +68,8 @@ export default function Login() {
                         >
                             {loading ? 'Loading...' : 'Sign In'}
                         </button>
-                        <button onClick={handleHome} className=" text-gray-300 underline px-4 py-2 rounded">Voltar a pagina inicial</button>
                     </div>
+                    <button onClick={handleHome} className=" text-gray-300 underline px-4 py-2 rounded">Voltar a pagina inicial</button>
                 </form>
             </div>
         </div>
