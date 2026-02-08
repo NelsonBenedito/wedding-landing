@@ -5,6 +5,7 @@ import OurStory from './components/OurStory';
 import Ceremony from './components/Ceremony';
 import Registry from './components/Registry';
 import RSVP from './components/RSVP';
+import Countdown from './components/Countdown';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
@@ -58,6 +59,7 @@ function App() {
             <Header theme={theme} toggleTheme={toggleTheme} />
             <main>
               <Hero />
+              <Countdown />
               <OurStory />
               <Ceremony />
               <Registry theme={theme} />
