@@ -25,7 +25,7 @@ const Header = () => {
     return (
         <header
             className={cn(
-                "sticky container top-0 right-0 z-50 transition-all duration-300",
+                "sticky container md:fixed top-0 right-0 z-50 transition-all duration-300",
                 isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"
             )}
         >
