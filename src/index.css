@@ -4,12 +4,33 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background: #FAFAFA;
+  --card-bg: #FFFFFF;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --border-color: #F3F4F6;
+  --header-bg: rgba(255, 255, 255, 0.8);
+}
+
+.dark {
+  --background: #121212;
+  --card-bg: #1E1E1E;
+  --text-primary: #F5F5F5;
+  --text-secondary: #A0A0A0;
+  --border-color: #2D2D2D;
+  --header-bg: rgba(18, 18, 18, 0.8);
+}
+
 @layer base {
   body {
-    @apply bg-wedding-white text-text-dark font-sans antialiased;
+    background-color: var(--background);
+    color: var(--text-primary);
+    @apply font-sans antialiased transition-colors duration-300;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif text-text-dark;
+    color: var(--text-primary);
+    @apply font-serif;
   }
 }
 

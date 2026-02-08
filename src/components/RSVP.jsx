@@ -55,20 +55,20 @@ const RSVP = () => {
     };
 
     return (
-        <section id="rsvp" className="min-h-screen flex items-center py-20 bg-champagne-gold/5">
+        <section id="rsvp" className="min-h-screen flex items-center py-24 bg-[var(--background)] transition-colors duration-300">
             <div className="container mx-auto px-4 max-w-2xl">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="bg-white p-8 md:p-12 shadow-md rounded-sm border-t-4 border-champagne-gold"
+                    className="bg-[var(--card-bg)] p-8 md:p-12 shadow-2xl dark:shadow-none rounded-sm border-t-4 border-champagne-gold transition-colors duration-300"
                 >
                     <div className="text-center mb-10">
-                        <h2 className="font-serif text-3xl md:text-4xl mb-4 text-text-dark">RSVP</h2>
-                        <p className="text-text-muted">Por favor, responda até 1º de Julho de 2026</p>
+                        <h2 className="font-serif text-3xl md:text-5xl mb-4 text-text-primary">RSVP</h2>
+                        <p className="text-text-secondary italic font-serif">Por favor, responda até 1º de Julho de 2026</p>
                         {!supabase && (
-                            <p className="text-red-500 text-sm mt-4 bg-red-50 p-2 rounded">
-                                RSVP temporariamente indisponível (Chaves de API faltando).
+                            <p className="text-red-500 text-xs mt-6 bg-red-500/10 p-3 rounded-sm border border-red-500/20">
+                                RSVP temporariamente indisponível.
                             </p>
                         )}
                     </div>
@@ -79,36 +79,36 @@ const RSVP = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             className="text-center py-10"
                         >
-                            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-600">
+                            <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6 text-green-600 dark:text-green-400">
                                 <Check size={40} />
                             </div>
-                            <h3 className="font-serif text-2xl mb-2">Obrigado!</h3>
-                            <p className="text-text-muted">Sua resposta foi recebida.</p>
+                            <h3 className="font-serif text-3xl text-text-primary mb-2">Obrigado!</h3>
+                            <p className="text-text-secondary">Sua resposta foi recebida com carinho.</p>
                             <button
                                 onClick={() => { setIsSuccess(false); setFormData({ name: '', attendance: '', message: '' }); }}
-                                className="mt-8 text-sm text-champagne-gold hover:underline"
+                                className="mt-8 text-xs font-bold uppercase tracking-widest text-champagne-gold hover:text-[#B8860B] transition-colors"
                             >
                                 Enviar outra resposta
                             </button>
                         </motion.div>
                     ) : (
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-8">
                             <div>
-                                <label className="block text-sm font-medium text-text-dark mb-2">Nome Completo <span className="text-red-500">*</span></label>
+                                <label className="block text-[10px] uppercase tracking-widest font-bold text-text-secondary mb-3">Nome Completo <span className="text-red-500">*</span></label>
                                 <input
                                     type="text"
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className={`w-full p-3 border ${errors.name ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:border-champagne-gold transition-colors bg-wedding-white`}
+                                    className={`w-full p-4 bg-transparent border ${errors.name ? 'border-red-500' : 'border-gray-200 dark:border-white/10'} focus:outline-none focus:border-champagne-gold transition-colors text-text-primary text-sm rounded-sm`}
                                     placeholder="Nome(s) do(s) Convidado(s)"
                                 />
-                                {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
+                                {errors.name && <p className="text-[10px] text-red-500 mt-2 font-bold uppercase tracking-wider">{errors.name}</p>}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-text-dark mb-2">Você poderá comparecer? <span className="text-red-500">*</span></label>
-                                <div className="flex gap-4">
+                                <label className="block text-[10px] uppercase tracking-widest font-bold text-text-secondary mb-3">Você poderá comparecer? <span className="text-red-500">*</span></label>
+                                <div className="flex flex-col sm:flex-row gap-4">
                                     <label className="flex-1 cursor-pointer">
                                         <input
                                             type="radio"
@@ -118,7 +118,7 @@ const RSVP = () => {
                                             onChange={handleChange}
                                             className="peer sr-only"
                                         />
-                                        <div className="p-3 text-center border border-gray-200 peer-checked:border-champagne-gold peer-checked:bg-champagne-gold peer-checked:text-white transition-all hover:bg-gray-50">
+                                        <div className="p-4 text-center border border-gray-200 dark:border-white/10 peer-checked:border-champagne-gold peer-checked:bg-champagne-gold peer-checked:text-white transition-all hover:bg-gray-50 dark:hover:bg-white/5 text-sm font-bold uppercase tracking-widest text-text-secondary rounded-sm">
                                             Com Certeza!
                                         </div>
                                     </label>
@@ -131,36 +131,36 @@ const RSVP = () => {
                                             onChange={handleChange}
                                             className="peer sr-only"
                                         />
-                                        <div className="p-3 text-center border border-gray-200 peer-checked:border-text-muted peer-checked:bg-text-muted peer-checked:text-white transition-all hover:bg-gray-50">
+                                        <div className="p-4 text-center border border-gray-200 dark:border-white/10 peer-checked:border-gray-500 dark:peer-checked:border-gray-400 peer-checked:bg-gray-500 dark:peer-checked:bg-gray-400 peer-checked:text-white transition-all hover:bg-gray-50 dark:hover:bg-white/5 text-sm font-bold uppercase tracking-widest text-text-secondary rounded-sm">
                                             Infelizmente Não
                                         </div>
                                     </label>
                                 </div>
-                                {errors.attendance && <p className="text-xs text-red-500 mt-1">{errors.attendance}</p>}
+                                {errors.attendance && <p className="text-[10px] text-red-500 mt-2 font-bold uppercase tracking-wider">{errors.attendance}</p>}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-text-dark mb-2">Mensagem <span className="text-gray-400 font-normal">(Opcional)</span></label>
+                                <label className="block text-[10px] uppercase tracking-widest font-bold text-text-secondary mb-3">Mensagem <span className="text-text-secondary/50 font-normal lowercase italic">(Opcional)</span></label>
                                 <textarea
                                     name="message"
                                     value={formData.message}
                                     onChange={handleChange}
                                     rows="4"
-                                    className="w-full p-3 border border-gray-200 focus:outline-none focus:border-champagne-gold transition-colors bg-wedding-white resize-none"
-                                    placeholder="Nos avise se tiver alguma alergia..."
+                                    className="w-full p-4 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary text-sm resize-none rounded-sm"
+                                    placeholder="Nos avise se tiver alguma restrição alimentar ou apenas deixe um recado..."
                                 ></textarea>
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full bg-champagne-gold text-white py-4 font-medium uppercase tracking-widest hover:bg-[#B8860B] transition-colors disabled:opacity-70 flex items-center justify-center gap-2"
+                                className="w-full bg-champagne-gold text-white py-5 font-bold uppercase tracking-[0.2em] hover:bg-[#B8860B] transition-all duration-300 disabled:opacity-70 flex items-center justify-center gap-2 shadow-lg shadow-champagne-gold/20 text-xs rounded-sm"
                             >
                                 {isSubmitting ? (
                                     <>
-                                        <Loader2 className="animate-spin" size={20} /> Enviando...
+                                        <Loader2 className="animate-spin" size={18} /> Enviando...
                                     </>
-                                ) : "Enviar Resposta"}
+                                ) : "Confirmar Presença"}
                             </button>
                         </form>
                     )}

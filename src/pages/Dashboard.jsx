@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'
 import { Trash2, Plus, CheckCircle, Clock, Pencil } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import ThemeToggle from '../components/ThemeToggle'
 
 const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
     return (
@@ -252,7 +253,7 @@ const EditExpenseModal = ({ isOpen, onClose, onSave, expense }) => {
     )
 }
 
-export default function Dashboard() {
+export default function Dashboard({ theme, toggleTheme }) {
     const [rsvps, setRsvps] = useState([])
     const [gifts, setGifts] = useState([])
     const [expenses, setExpenses] = useState([])
@@ -470,436 +471,471 @@ export default function Dashboard() {
     const totalExpenses = expenses.reduce((acc, e) => acc + Number(e.amount), 0)
     const balance = totalGifts - totalExpenses
 
+    const confirmedGuests = rsvps.filter(r => r.attendance === 'yes').length
+    const declinedGuests = rsvps.filter(r => r.attendance === 'no').length
+    const pieData = [
+        { name: 'Confirmados', value: confirmedGuests },
+        { name: 'Recusados', value: declinedGuests }
+    ]
+    const COLORS = ['#D4AF37', '#6B7280'] // Gold and Gray
+    const occupancyRate = (confirmedGuests / 200) * 100
+
     if (loading) return <div className="p-10 text-center font-serif text-xl">Carregando dados...</div>
 
     return (
-        <div className="container mx-auto p-4 max-w-6xl">
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-serif text-text-dark">Painel de Controle</h1>
-                <div className="flex gap-4">
-                    <button onClick={handleHome} className="text-text-muted hover:text-champagne-gold transition-colors text-sm font-medium">Site do Casamento</button>
-                    <button onClick={handleLogout} className="bg-red-500 text-white px-6 py-2 rounded-sm text-sm font-bold hover:bg-red-600 transition-colors shadow-sm">Sair</button>
+        <div className="min-h-screen bg-[var(--background)] py-12 px-4 transition-colors duration-300">
+            <div className="max-w-6xl mx-auto">
+                <div className="flex justify-between items-center mb-12">
+                    <div>
+                        <h1 className="text-4xl font-serif text-text-primary mb-2">Painel do Casamento</h1>
+                        <p className="text-text-secondary uppercase tracking-widest text-sm">Controle de Convidados e Finanças</p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+                        <button
+                            onClick={handleLogout}
+                            className="bg-text-primary text-[var(--text-primary)] px-6 py-2 rounded-sm hover:opacity-90 transition-all text-sm font-bold uppercase tracking-widest"
+                        >
+                            Sair
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-            {/* Tab Switcher */}
-            <div className="flex border-b border-gray-100 mb-8">
-                <button
-                    onClick={() => setActiveTab('presence')}
-                    className={`px-8 py-4 text-sm font-bold uppercase tracking-widest transition-all relative ${activeTab === 'presence' ? 'text-champagne-gold' : 'text-text-muted hover:text-text-dark'}`}
-                >
-                    Presença
-                    {activeTab === 'presence' && (
-                        <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-champagne-gold" />
-                    )}
-                </button>
-                <button
-                    onClick={() => setActiveTab('finance')}
-                    className={`px-8 py-4 text-sm font-bold uppercase tracking-widest transition-all relative ${activeTab === 'finance' ? 'text-champagne-gold' : 'text-text-muted hover:text-text-dark'}`}
-                >
-                    Finanças
-                    {activeTab === 'finance' && (
-                        <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-champagne-gold" />
-                    )}
-                </button>
-            </div>
-
-            <AnimatePresence mode="wait">
-                {activeTab === 'presence' ? (
-                    <motion.div
-                        key="presence"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 10 }}
-                        transition={{ duration: 0.2 }}
+                {/* Tab Switcher */}
+                <div className="flex border-b border-gray-100 dark:border-white/10 mb-8 overflow-x-auto">
+                    <button
+                        onClick={() => setActiveTab('presence')}
+                        className={`px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all relative shrink-0 ${activeTab === 'presence' ? 'text-champagne-gold' : 'text-text-secondary hover:text-text-primary'}`}
                     >
-                        {/* Stats Section (RSVP & Capacity) */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-                            {/* Chart */}
-                            <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-100 flex flex-col items-center">
-                                <h3 className="text-lg font-serif mb-4 text-text-dark">Status dos Convites</h3>
-                                <div className="w-full h-64">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <PieChart>
-                                            <Pie
-                                                data={[
-                                                    { name: 'Confirmados', value: rsvps.filter(r => r.attendance === 'yes').length },
-                                                    { name: 'Recusados', value: rsvps.filter(r => r.attendance === 'no').length },
-                                                    { name: 'Pendentes', value: Math.max(0, 200 - rsvps.filter(r => r.attendance === 'yes').length) }
-                                                ]}
-                                                cx="50%"
-                                                cy="50%"
-                                                innerRadius={60}
-                                                outerRadius={80}
-                                                paddingAngle={5}
-                                                dataKey="value"
-                                            >
-                                                <Cell key="cell-yes" fill="#4ade80" />
-                                                <Cell key="cell-no" fill="#f87171" />
-                                                <Cell key="cell-pending" fill="#e5e7eb" />
-                                            </Pie>
-                                            <Tooltip />
-                                            <Legend />
-                                        </PieChart>
-                                    </ResponsiveContainer>
+                        Presença
+                        {activeTab === 'presence' && (
+                            <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-champagne-gold" />
+                        )}
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('finance')}
+                        className={`px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all relative shrink-0 ${activeTab === 'finance' ? 'text-champagne-gold' : 'text-text-secondary hover:text-text-primary'}`}
+                    >
+                        Finanças
+                        {activeTab === 'finance' && (
+                            <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-champagne-gold" />
+                        )}
+                    </button>
+                </div>
+
+                <AnimatePresence mode="wait">
+                    {activeTab === 'presence' ? (
+                        <motion.div
+                            key="presence"
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: 10 }}
+                            transition={{ duration: 0.2 }}
+                            className="space-y-8"
+                        >
+                            {/* Stats Cards */}
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div className="bg-[var(--card-bg)] p-6 rounded-sm shadow-sm border border-gray-100 dark:border-white/5">
+                                    <p className="text-[10px] uppercase tracking-widest text-text-secondary font-bold mb-1">Confirmados</p>
+                                    <p className="text-3xl font-serif text-text-primary">{confirmedGuests}</p>
+                                </div>
+                                <div className="bg-[var(--card-bg)] p-6 rounded-sm shadow-sm border border-gray-100 dark:border-white/5">
+                                    <p className="text-[10px] uppercase tracking-widest text-text-secondary font-bold mb-1">Recusados</p>
+                                    <p className="text-3xl font-serif text-text-primary">{declinedGuests}</p>
+                                </div>
+                                <div className="bg-[var(--card-bg)] p-6 rounded-sm shadow-sm border border-gray-100 dark:border-white/5">
+                                    <p className="text-[10px] uppercase tracking-widest text-text-secondary font-bold mb-1">Total Respostas</p>
+                                    <p className="text-3xl font-serif text-text-primary">{rsvps.length}</p>
+                                </div>
+                                <div className="bg-[var(--card-bg)] p-6 rounded-sm shadow-sm border border-gray-100 dark:border-white/5">
+                                    <p className="text-[10px] uppercase tracking-widest text-text-secondary font-bold mb-1">Capacidade</p>
+                                    <p className="text-3xl font-serif text-text-primary">200</p>
                                 </div>
                             </div>
 
-                            {/* Numbers */}
-                            <div className="bg-white p-8 rounded-sm shadow-sm border border-gray-100 flex flex-col justify-center space-y-4">
-                                <h3 className="text-lg font-serif mb-2 text-text-dark border-b pb-2">Capacidade (200 Pessoas)</h3>
-                                <div className="flex justify-between items-center p-4 bg-green-50 rounded-sm border border-green-100">
-                                    <span className="text-green-800 font-medium">Confirmados (Sim)</span>
-                                    <span className="text-2xl font-serif text-green-600">{rsvps.filter(r => r.attendance === 'yes').length}</span>
-                                </div>
-                                <div className="flex justify-between items-center p-4 bg-red-50 rounded-sm border border-red-100">
-                                    <span className="text-red-800 font-medium">Recusados (Não)</span>
-                                    <span className="text-2xl font-serif text-red-600">{rsvps.filter(r => r.attendance === 'no').length}</span>
-                                </div>
-                                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-sm border border-gray-100">
-                                    <span className="text-gray-600 font-medium">Vagas Restantes</span>
-                                    <span className={`text-2xl font-serif ${rsvps.filter(r => r.attendance === 'yes').length > 200 ? 'text-red-600' : 'text-gray-400'}`}>
-                                        {Math.max(0, 200 - rsvps.filter(r => r.attendance === 'yes').length)}
-                                    </span>
-                                </div>
-
-                                {rsvps.filter(r => r.attendance === 'yes').length > 200 && (
-                                    <div className="mt-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
-                                        <p className="font-bold">Atenção: Capacidade Excedida!</p>
-                                        <p>Você tem {rsvps.filter(r => r.attendance === 'yes').length - 200} convidados confirmados além do limite.</p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-2xl font-serif text-text-dark">Lista de Convidados</h2>
-                        </div>
-
-                        {/* Mobile View (Cards) */}
-                        <div className="md:hidden space-y-4 mb-8">
-                            {rsvps.map((rsvp) => (
-                                <div key={rsvp.id} className="bg-white p-5 rounded-sm shadow-sm border border-gray-100">
-                                    <div className="flex justify-between items-start mb-3">
-                                        <h3 className="font-bold text-lg text-gray-800">{rsvp.name}</h3>
-                                        <span
-                                            className={`px-3 py-1 text-xs font-semibold rounded-full ${rsvp.attendance === 'yes'
-                                                ? 'bg-green-100 text-green-800'
-                                                : 'bg-red-100 text-red-800'
-                                                }`}
-                                        >
-                                            {rsvp.attendance === 'yes' ? 'Confirmado' : 'Rejeitado'}
-                                        </span>
-                                    </div>
-
-                                    {rsvp.message && (
-                                        <div className="bg-gray-50 p-3 rounded text-sm text-gray-600 mb-3 italic">
-                                            "{rsvp.message}"
-                                        </div>
-                                    )}
-
-                                    <div className="flex justify-between items-center mt-3 border-t pt-3">
-                                        <div className="text-xs text-gray-400">
-                                            {new Date(rsvp.created_at).toLocaleDateString('pt-BR', {
-                                                day: '2-digit',
-                                                month: 'long',
-                                                year: 'numeric',
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            })}
-                                        </div>
-                                        <button
-                                            onClick={() => handleDeleteRsvp(rsvp.id)}
-                                            className="text-red-400 hover:text-red-700 p-2 transition-colors"
-                                            title="Excluir"
-                                        >
-                                            <Trash2 size={18} />
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
-                            {rsvps.length === 0 && (
-                                <div className="text-center py-10 text-gray-500 italic">
-                                    Ainda não há respostas.
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Desktop View (Table) */}
-                        <div className="hidden md:block bg-white shadow-sm rounded-sm border border-gray-100 overflow-hidden mb-8">
-                            <table className="min-w-full leading-normal">
-                                <thead>
-                                    <tr>
-                                        <th className="px-6 py-4 border-b border-gray-200 bg-gray-50 text-left text-[10px] uppercase tracking-widest font-semibold text-text-muted">
-                                            Nome
-                                        </th>
-                                        <th className="px-6 py-4 border-b border-gray-200 bg-gray-50 text-left text-[10px] uppercase tracking-widest font-semibold text-text-muted">
-                                            Presença
-                                        </th>
-                                        <th className="px-6 py-4 border-b border-gray-200 bg-gray-50 text-left text-[10px] uppercase tracking-widest font-semibold text-text-muted">
-                                            Mensagem
-                                        </th>
-                                        <th className="px-6 py-4 border-b border-gray-200 bg-gray-50 text-left text-[10px] uppercase tracking-widest font-semibold text-text-muted">
-                                            Data
-                                        </th>
-                                        <th className="px-6 py-4 border-b border-gray-200 bg-gray-50 text-center text-[10px] uppercase tracking-widest font-semibold text-text-muted">
-                                            Ações
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-100">
-                                    {rsvps.map((rsvp) => (
-                                        <tr key={rsvp.id}>
-                                            <td className="px-6 py-4 text-sm">
-                                                <p className="text-text-dark font-medium">{rsvp.name}</p>
-                                            </td>
-                                            <td className="px-6 py-4 text-sm">
-                                                <span
-                                                    className={`inline-block px-3 py-1 text-xs font-bold uppercase rounded-full ${rsvp.attendance === 'yes' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+                            {/* Chart & Summary */}
+                            <div className="grid lg:grid-cols-3 gap-8">
+                                <div className="lg:col-span-2 bg-[var(--card-bg)] p-8 rounded-sm shadow-sm border border-gray-100 dark:border-white/5">
+                                    <h3 className="text-xl font-serif text-text-primary mb-6">Status de Confirmação</h3>
+                                    <div className="w-full h-64">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <PieChart>
+                                                <Pie
+                                                    data={pieData}
+                                                    cx="50%"
+                                                    cy="50%"
+                                                    innerRadius={60}
+                                                    outerRadius={80}
+                                                    paddingAngle={5}
+                                                    dataKey="value"
+                                                    stroke="none"
                                                 >
-                                                    {rsvp.attendance === 'yes' ? 'Confirmado' : 'Rejeitado'}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 text-sm">
-                                                <p className="text-text-muted italic max-w-xs truncate" title={rsvp.message}>{rsvp.message || '-'}</p>
-                                            </td>
-                                            <td className="px-6 py-4 text-sm text-text-muted">
-                                                {new Date(rsvp.created_at).toLocaleDateString('pt-BR')}
-                                            </td>
-                                            <td className="px-6 py-4 text-center">
+                                                    {pieData.map((entry, index) => (
+                                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                    ))}
+                                                </Pie>
+                                                <Tooltip
+                                                    contentStyle={{
+                                                        backgroundColor: theme === 'dark' ? '#1E1E1E' : '#FFFFFF',
+                                                        borderColor: theme === 'dark' ? '#2D2D2D' : '#F3F4F6',
+                                                        color: theme === 'dark' ? '#F5F5F5' : '#333333'
+                                                    }}
+                                                    itemStyle={{ color: theme === 'dark' ? '#F5F5F5' : '#333333' }}
+                                                />
+                                                <Legend verticalAlign="bottom" height={36} />
+                                            </PieChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                </div>
+
+                                <div className="bg-[var(--card-bg)] p-8 rounded-sm shadow-sm border border-gray-100 dark:border-white/5">
+                                    <h3 className="text-xl font-serif text-text-primary mb-6">Capacidade</h3>
+                                    <div className="space-y-6">
+                                        <div>
+                                            <div className="flex justify-between items-center mb-2">
+                                                <span className="text-xs uppercase tracking-widest text-text-secondary font-bold">Ocupação</span>
+                                                <span className="text-sm font-bold text-text-primary">{Math.round(occupancyRate)}%</span>
+                                            </div>
+                                            <div className="w-full bg-gray-100 dark:bg-white/5 h-2 rounded-full overflow-hidden">
+                                                <div
+                                                    className={`h-full transition-all duration-1000 ${occupancyRate > 100 ? 'bg-red-500' : 'bg-champagne-gold'}`}
+                                                    style={{ width: `${Math.min(occupancyRate, 100)}%` }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="pt-4 border-t border-gray-100 dark:border-white/5">
+                                            <p className="text-xs text-text-secondary leading-relaxed italic">
+                                                {occupancyRate > 100
+                                                    ? "⚠️ Atenção: O número de confirmados excede a capacidade planejada de 200 convidados."
+                                                    : "O número de confirmados está dentro da capacidade esperada para o evento."}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Guest List */}
+                            <div className="bg-[var(--card-bg)] rounded-sm shadow-sm border border-gray-100 dark:border-white/5 overflow-hidden">
+                                <div className="p-8 border-b border-gray-100 dark:border-white/5">
+                                    <h3 className="text-xl font-serif text-text-primary">Lista de Convidados</h3>
+                                </div>
+
+                                {/* Mobile View */}
+                                <div className="md:hidden divide-y divide-gray-100 dark:divide-white/5">
+                                    {rsvps.map((rsvp) => (
+                                        <div key={rsvp.id} className="p-4 bg-[var(--card-bg)]">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <div>
+                                                    <p className="font-serif text-lg text-text-primary">{rsvp.name}</p>
+                                                    <p className="text-xs text-text-secondary">{rsvp.email}</p>
+                                                </div>
                                                 <button
                                                     onClick={() => handleDeleteRsvp(rsvp.id)}
-                                                    className="text-red-400 hover:text-red-700 transition-colors"
-                                                    title="Excluir Convidado"
+                                                    className="text-red-400 hover:text-red-700 p-2"
                                                 >
-                                                    <Trash2 size={18} className="mx-auto" />
+                                                    <Trash2 size={18} />
                                                 </button>
-                                            </td>
-                                        </tr>
+                                            </div>
+                                            <div className="flex justify-between items-center">
+                                                <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${rsvp.attendance === 'yes' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+                                                    }`}>
+                                                    {rsvp.attendance === 'yes' ? 'Confirmado' : 'Recusado'}
+                                                </span>
+                                                <span className="text-xs text-text-secondary">
+                                                    {new Date(rsvp.created_at).toLocaleDateString()}
+                                                </span>
+                                            </div>
+                                        </div>
                                     ))}
-                                    {rsvps.length === 0 && (
-                                        <tr>
-                                            <td colSpan="5" className="px-6 py-10 text-center text-text-muted italic">Nenhuma resposta recebida.</td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                    </motion.div>
-                ) : (
-                    <motion.div
-                        key="finance"
-                        initial={{ opacity: 0, x: 10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -10 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        {/* Financial Summary */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                            <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-100 flex flex-col items-center">
-                                <span className="text-xs uppercase tracking-widest text-text-muted mb-2">Total em Presentes</span>
-                                <span className="text-3xl font-serif text-green-600">R$ {totalGifts.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-                            </div>
-                            <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-100 flex flex-col items-center">
-                                <span className="text-xs uppercase tracking-widest text-text-muted mb-2">Total de Gastos</span>
-                                <span className="text-3xl font-serif text-red-600">R$ {totalExpenses.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-                            </div>
-                            <div className={`bg-white p-6 rounded-sm shadow-sm border border-gray-100 flex flex-col items-center ${balance >= 0 ? 'border-b-4 border-b-green-500' : 'border-b-4 border-b-red-500'}`}>
-                                <span className="text-xs uppercase tracking-widest text-text-muted mb-2">Saldo Atual</span>
-                                <span className={`text-3xl font-serif ${balance >= 0 ? 'text-text-dark' : 'text-red-700'}`}>R$ {balance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-                            </div>
-                        </div>
-
-                        {/* Financial Sections */}
-                        <div className="grid grid-cols-1 gap-12 mb-8">
-                            {/* Gifts Section */}
-                            <section>
-                                <div className="flex justify-between items-center mb-6">
-                                    <h2 className="text-2xl font-serif text-text-dark">Presentes Recebidos</h2>
                                 </div>
 
-                                <div className="bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden">
-                                    <form onSubmit={handleAddGift} className="p-6 bg-champagne-gold/5 border-b border-gray-100 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-                                        <div>
-                                            <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-1">Doador</label>
-                                            <input
-                                                type="text"
-                                                required
-                                                placeholder="Ex: Tio João"
-                                                className="w-full text-sm p-2 border border-gray-200 focus:outline-none focus:border-champagne-gold"
-                                                value={newGift.donor_name}
-                                                onChange={(e) => setNewGift({ ...newGift, donor_name: e.target.value })}
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-1">Valor (R$)</label>
-                                            <input
-                                                type="number"
-                                                required
-                                                placeholder="0.00"
-                                                className="w-full text-sm p-2 border border-gray-200 focus:outline-none focus:border-champagne-gold"
-                                                value={newGift.amount}
-                                                onChange={(e) => setNewGift({ ...newGift, amount: e.target.value })}
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-1">Mensagem (Opcional)</label>
-                                            <input
-                                                type="text"
-                                                className="w-full text-sm p-2 border border-gray-200 focus:outline-none focus:border-champagne-gold"
-                                                value={newGift.message}
-                                                onChange={(e) => setNewGift({ ...newGift, message: e.target.value })}
-                                            />
-                                        </div>
-                                        <button type="submit" className="bg-champagne-gold text-white p-2 flex items-center justify-center gap-2 font-bold hover:bg-[#B8860B] transition-colors">
-                                            <Plus size={18} /> Adicionar Presente
-                                        </button>
-                                    </form>
-
-                                    <div className="overflow-x-auto">
-                                        <table className="min-w-full divide-y divide-gray-200">
-                                            <thead className="bg-gray-50 uppercase text-[10px] tracking-widest text-text-muted">
-                                                <tr>
-                                                    <th className="px-6 py-4 text-left">Doador</th>
-                                                    <th className="px-6 py-4 text-left">Valor</th>
-                                                    <th className="px-6 py-4 text-left">Mensagem</th>
-                                                    <th className="px-6 py-4 text-center w-20">Ações</th>
+                                {/* Desktop View */}
+                                <div className="hidden md:block overflow-x-auto">
+                                    <table className="w-full text-left">
+                                        <thead>
+                                            <tr className="bg-gray-50 dark:bg-black/20">
+                                                <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Nome</th>
+                                                <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Email</th>
+                                                <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Status</th>
+                                                <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Data</th>
+                                                <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold text-center">Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-100 dark:divide-white/5">
+                                            {rsvps.map((rsvp) => (
+                                                <tr key={rsvp.id} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                                    <td className="px-6 py-4 font-serif text-lg text-text-primary">{rsvp.name}</td>
+                                                    <td className="px-6 py-4 text-sm text-text-secondary">{rsvp.email}</td>
+                                                    <td className="px-6 py-4">
+                                                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${rsvp.attendance === 'yes' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+                                                            }`}>
+                                                            {rsvp.attendance === 'yes' ? 'Confirmado' : 'Recusado'}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-xs text-text-secondary">
+                                                        {new Date(rsvp.created_at).toLocaleDateString()}
+                                                    </td>
+                                                    <td className="px-6 py-4 text-center">
+                                                        <button
+                                                            onClick={() => handleDeleteRsvp(rsvp.id)}
+                                                            className="text-red-400 hover:text-red-700 transition-colors"
+                                                        >
+                                                            <Trash2 size={18} />
+                                                        </button>
+                                                    </td>
                                                 </tr>
-                                            </thead>
-                                            <tbody className="bg-white divide-y divide-gray-100 text-sm">
-                                                {gifts.map((gift) => (
-                                                    <tr key={gift.id}>
-                                                        <td className="px-6 py-4 font-medium text-text-dark">{gift.donor_name}</td>
-                                                        <td className="px-6 py-4 text-green-600 font-bold">R$ {Number(gift.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-                                                        <td className="px-6 py-4 text-text-muted italic max-w-xs truncate" title={gift.message}>{gift.message || "-"}</td>
-                                                        <td className="px-6 py-4 text-center">
-                                                            <div className="flex items-center justify-center gap-2">
-                                                                <button onClick={() => setEditingGift(gift)} className="text-champagne-gold hover:text-[#B8860B] transition-colors" title="Editar">
-                                                                    <Pencil size={18} />
-                                                                </button>
-                                                                <button onClick={() => handleDeleteGift(gift.id)} className="text-red-400 hover:text-red-700 transition-colors" title="Excluir">
-                                                                    <Trash2 size={18} />
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                                {gifts.length === 0 && (
-                                                    <tr>
-                                                        <td colSpan="4" className="px-6 py-10 text-center text-text-muted italic">Nenhum presente registrado ainda.</td>
-                                                    </tr>
-                                                )}
-                                            </tbody>
-                                        </table>
+                                            ))}
+                                            {rsvps.length === 0 && (
+                                                <tr>
+                                                    <td colSpan="5" className="px-6 py-10 text-center text-text-secondary italic">Nenhuma resposta recebida.</td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="finance"
+                            initial={{ opacity: 0, x: 10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -10 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            {/* Financial Summary */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                                <div className="bg-[var(--card-bg)] p-6 rounded-sm shadow-sm border border-gray-100 dark:border-white/5 flex flex-col items-center">
+                                    <span className="text-xs uppercase tracking-widest text-text-secondary mb-2">Total em Presentes</span>
+                                    <span className="text-3xl font-serif text-green-600">R$ {totalGifts.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                </div>
+                                <div className="bg-[var(--card-bg)] p-6 rounded-sm shadow-sm border border-gray-100 dark:border-white/5 flex flex-col items-center">
+                                    <span className="text-xs uppercase tracking-widest text-text-secondary mb-2">Total de Gastos</span>
+                                    <span className="text-3xl font-serif text-red-600">R$ {totalExpenses.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                </div>
+                                <div className={`bg-[var(--card-bg)] p-6 rounded-sm shadow-sm border border-gray-100 dark:border-white/5 flex flex-col items-center ${balance >= 0 ? 'border-b-4 border-b-green-500' : 'border-b-4 border-b-red-500'}`}>
+                                    <span className="text-xs uppercase tracking-widest text-text-secondary mb-2">Saldo Atual</span>
+                                    <span className={`text-3xl font-serif ${balance >= 0 ? 'text-text-primary' : 'text-red-700'}`}>R$ {balance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                </div>
+                            </div>
+
+                            {/* Financial Sections */}
+                            <div className="grid grid-cols-1 gap-12 mb-8">
+                                {/* Gifts Section */}
+                                <section>
+                                    <div className="flex justify-between items-center mb-6">
+                                        <h2 className="text-2xl font-serif text-text-primary">Presentes Recebidos</h2>
                                     </div>
-                                </div>
-                            </section>
 
-                            {/* Expenses Section */}
-                            <section>
-                                <div className="flex justify-between items-center mb-6">
-                                    <h2 className="text-2xl font-serif text-text-dark">Despesas do Casamento</h2>
-                                </div>
-
-                                <div className="bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden">
-                                    <form onSubmit={handleAddExpense} className="p-6 bg-red-50/20 border-b border-gray-100 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-                                        <div>
-                                            <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-1">Descrição</label>
-                                            <input
-                                                type="text"
-                                                required
-                                                placeholder="Ex: Buffet, Local, Vestido"
-                                                className="w-full text-sm p-2 border border-gray-200 focus:outline-none focus:border-champagne-gold"
-                                                value={newExpense.description}
-                                                onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-1">Valor (R$)</label>
-                                            <input
-                                                type="number"
-                                                required
-                                                placeholder="0.00"
-                                                className="w-full text-sm p-2 border border-gray-200 focus:outline-none focus:border-champagne-gold"
-                                                value={newExpense.amount}
-                                                onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-1">Categoria</label>
-                                            <select
-                                                className="w-full text-sm p-2 border border-gray-200 focus:outline-none focus:border-champagne-gold"
-                                                value={newExpense.category}
-                                                onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
+                                    <div className="bg-[var(--card-bg)] rounded-sm shadow-sm border border-gray-100 dark:border-white/5 overflow-hidden">
+                                        <form onSubmit={handleAddGift} className="p-6 bg-champagne-gold/5 border-b border-gray-100 dark:border-white/5 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                                            <div>
+                                                <label className="block text-[10px] uppercase tracking-widest text-text-secondary mb-1 font-bold">Doador</label>
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    placeholder="Ex: Tio João"
+                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary"
+                                                    value={newGift.donor_name}
+                                                    onChange={(e) => setNewGift({ ...newGift, donor_name: e.target.value })}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-[10px] uppercase tracking-widest text-text-secondary mb-1 font-bold">Valor (R$)</label>
+                                                <input
+                                                    type="number"
+                                                    step="0.01"
+                                                    required
+                                                    placeholder="0,00"
+                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary"
+                                                    value={newGift.amount}
+                                                    onChange={(e) => setNewGift({ ...newGift, amount: e.target.value })}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-[10px] uppercase tracking-widest text-text-secondary mb-1 font-bold">Mensagem (Opcional)</label>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Uma mensagem carinhosa..."
+                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary"
+                                                    value={newGift.message}
+                                                    onChange={(e) => setNewGift({ ...newGift, message: e.target.value })}
+                                                />
+                                            </div>
+                                            <button
+                                                type="submit"
+                                                className="bg-champagne-gold text-white p-3 flex items-center justify-center gap-2 font-bold hover:bg-[#B8860B] transition-colors shadow-sm uppercase tracking-widest text-[10px]"
                                             >
-                                                <option value="">Selecione...</option>
-                                                <option value="Buffet & Bebidas">Buffet & Bebidas</option>
-                                                <option value="Local & Decoração">Local & Decoração</option>
-                                                <option value="Foto & Vídeo">Foto & Vídeo</option>
-                                                <option value="Trajes">Trajes</option>
-                                                <option value="Papelaria">Papelaria</option>
-                                                <option value="Música">Música</option>
-                                                <option value="Outros">Outros</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" className="bg-red-800 text-white p-2 flex items-center justify-center gap-2 font-bold hover:bg-red-900 transition-colors">
-                                            <Plus size={18} /> Adicionar Despesa
-                                        </button>
-                                    </form>
+                                                <Plus size={16} /> Adicionar
+                                            </button>
+                                        </form>
 
-                                    <div className="overflow-x-auto">
-                                        <table className="min-w-full divide-y divide-gray-200">
-                                            <thead className="bg-gray-50 uppercase text-[10px] tracking-widest text-text-muted">
-                                                <tr>
-                                                    <th className="px-6 py-4 text-left">Descrição</th>
-                                                    <th className="px-6 py-4 text-left">Valor</th>
-                                                    <th className="px-6 py-4 text-left">Categoria</th>
-                                                    <th className="px-6 py-4 text-center">Status</th>
-                                                    <th className="px-6 py-4 text-center w-20">Ações</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="bg-white divide-y divide-gray-100 text-sm">
-                                                {expenses.map((expense) => (
-                                                    <tr key={expense.id} className={expense.status === 'paid' ? 'bg-gray-50/50' : ''}>
-                                                        <td className="px-6 py-4">
-                                                            <p className={`font-medium ${expense.status === 'paid' ? 'text-text-muted line-through' : 'text-text-dark'}`}>{expense.description}</p>
-                                                        </td>
-                                                        <td className="px-6 py-4 text-red-600 font-bold">R$ {Number(expense.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-                                                        <td className="px-6 py-4 text-text-muted text-xs uppercase tracking-wider">{expense.category || "Outros"}</td>
-                                                        <td className="px-6 py-4 text-center">
-                                                            <button
-                                                                onClick={() => handleToggleExpenseStatus(expense)}
-                                                                className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase transition-colors ${expense.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}
-                                                            >
-                                                                {expense.status === 'paid' ? <><CheckCircle size={12} /> Pago</> : <><Clock size={12} /> Pendente</>}
-                                                            </button>
-                                                        </td>
-                                                        <td className="px-6 py-4 text-center">
-                                                            <div className="flex items-center justify-center gap-2">
-                                                                <button onClick={() => setEditingExpense(expense)} className="text-champagne-gold hover:text-[#B8860B] transition-colors" title="Editar">
-                                                                    <Pencil size={18} />
-                                                                </button>
-                                                                <button onClick={() => handleDeleteExpense(expense.id)} className="text-red-400 hover:text-red-700 transition-colors" title="Excluir">
-                                                                    <Trash2 size={18} />
-                                                                </button>
-                                                            </div>
-                                                        </td>
+                                        <div className="overflow-x-auto">
+                                            <table className="w-full text-left">
+                                                <thead>
+                                                    <tr className="bg-gray-50 dark:bg-black/20">
+                                                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Doador</th>
+                                                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Valor</th>
+                                                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Mensagem</th>
+                                                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold text-center">Ações</th>
                                                     </tr>
-                                                ))}
-                                                {expenses.length === 0 && (
-                                                    <tr>
-                                                        <td colSpan="5" className="px-6 py-10 text-center text-text-muted italic">Nenhuma despesa registrada.</td>
-                                                    </tr>
-                                                )}
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody className="divide-y divide-gray-100 dark:divide-white/5">
+                                                    {gifts.map((gift) => (
+                                                        <tr key={gift.id} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                                            <td className="px-6 py-4 font-serif text-lg text-text-primary">{gift.donor_name}</td>
+                                                            <td className="px-6 py-4 text-green-600 font-bold">
+                                                                R$ {Number(gift.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                                            </td>
+                                                            <td className="px-6 py-4 text-sm text-text-secondary italic max-w-xs truncate" title={gift.message}>
+                                                                {gift.message || "-"}
+                                                            </td>
+                                                            <td className="px-6 py-4 text-center">
+                                                                <div className="flex items-center justify-center gap-2">
+                                                                    <button
+                                                                        onClick={() => setEditingGift(gift)}
+                                                                        className="text-champagne-gold hover:text-[#B8860B] p-2 transition-colors"
+                                                                    >
+                                                                        <Pencil size={18} />
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => handleDeleteGift(gift.id)}
+                                                                        className="text-red-400 hover:text-red-700 p-2 transition-colors"
+                                                                    >
+                                                                        <Trash2 size={18} />
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                    {gifts.length === 0 && (
+                                                        <tr>
+                                                            <td colSpan="4" className="px-6 py-10 text-center text-text-secondary italic">Nenhum presente registrado.</td>
+                                                        </tr>
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                            </section>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                                </section>
+
+                                {/* Expenses Section */}
+                                <section>
+                                    <div className="flex justify-between items-center mb-6">
+                                        <h2 className="text-2xl font-serif text-text-primary">Despesas do Casamento</h2>
+                                    </div>
+
+                                    <div className="bg-[var(--card-bg)] rounded-sm shadow-sm border border-gray-100 dark:border-white/5 overflow-hidden">
+                                        <form onSubmit={handleAddExpense} className="p-6 bg-red-50/10 border-b border-gray-100 dark:border-white/5 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                                            <div>
+                                                <label className="block text-[10px] uppercase tracking-widest text-text-secondary mb-1 font-bold">Descrição</label>
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    placeholder="Ex: Buffet, Local..."
+                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary"
+                                                    value={newExpense.description}
+                                                    onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-[10px] uppercase tracking-widest text-text-secondary mb-1 font-bold">Valor (R$)</label>
+                                                <input
+                                                    type="number"
+                                                    step="0.01"
+                                                    required
+                                                    placeholder="0,00"
+                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary"
+                                                    value={newExpense.amount}
+                                                    onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-[10px] uppercase tracking-widest text-text-secondary mb-1 font-bold">Categoria</label>
+                                                <select
+                                                    className="w-full text-sm p-3 bg-[var(--card-bg)] border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary"
+                                                    value={newExpense.category}
+                                                    onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
+                                                >
+                                                    <option value="">Selecione...</option>
+                                                    <option value="Buffet & Bebidas">Buffet & Bebidas</option>
+                                                    <option value="Local & Decoração">Local & Decoração</option>
+                                                    <option value="Foto & Vídeo">Foto & Vídeo</option>
+                                                    <option value="Trajes">Trajes</option>
+                                                    <option value="Papelaria">Papelaria</option>
+                                                    <option value="Música">Música</option>
+                                                    <option value="Outros">Outros</option>
+                                                </select>
+                                            </div>
+                                            <button
+                                                type="submit"
+                                                className="bg-red-800 text-white p-3 flex items-center justify-center gap-2 font-bold hover:bg-red-900 transition-colors shadow-sm uppercase tracking-widest text-[10px]"
+                                            >
+                                                <Plus size={16} /> Adicionar
+                                            </button>
+                                        </form>
+
+                                        <div className="overflow-x-auto">
+                                            <table className="w-full text-left">
+                                                <thead>
+                                                    <tr className="bg-gray-50 dark:bg-black/20">
+                                                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Descrição</th>
+                                                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Valor</th>
+                                                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Categoria</th>
+                                                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold text-center">Status</th>
+                                                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold text-center">Ações</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="divide-y divide-gray-100 dark:divide-white/5">
+                                                    {expenses.map((expense) => (
+                                                        <tr key={expense.id} className={`hover:bg-gray-50 dark:hover:bg-white/5 transition-colors ${expense.status === 'paid' ? 'opacity-60' : ''}`}>
+                                                            <td className="px-6 py-4">
+                                                                <p className={`font-serif text-lg text-text-primary ${expense.status === 'paid' ? 'line-through' : ''}`}>{expense.description}</p>
+                                                            </td>
+                                                            <td className="px-6 py-4 text-red-600 font-bold">R$ {Number(expense.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                                                            <td className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">{expense.category || "Outros"}</td>
+                                                            <td className="px-6 py-4 text-center">
+                                                                <button
+                                                                    onClick={() => handleToggleExpenseStatus(expense)}
+                                                                    className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase transition-colors ${expense.status === 'paid' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'}`}
+                                                                >
+                                                                    {expense.status === 'paid' ? <><CheckCircle size={12} /> Pago</> : <><Clock size={12} /> Pendente</>}
+                                                                </button>
+                                                            </td>
+                                                            <td className="px-6 py-4 text-center">
+                                                                <div className="flex items-center justify-center gap-2">
+                                                                    <button
+                                                                        onClick={() => setEditingExpense(expense)}
+                                                                        className="text-champagne-gold hover:text-[#B8860B] p-2 transition-colors"
+                                                                    >
+                                                                        <Pencil size={18} />
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => handleDeleteExpense(expense.id)}
+                                                                        className="text-red-400 hover:text-red-700 p-2 transition-colors"
+                                                                    >
+                                                                        <Trash2 size={18} />
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                    {expenses.length === 0 && (
+                                                        <tr>
+                                                            <td colSpan="5" className="px-6 py-10 text-center text-text-secondary italic">Nenhuma despesa registrada.</td>
+                                                        </tr>
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+
             <ConfirmModal
                 isOpen={confirmData.isOpen}
                 onClose={() => setConfirmData({ ...confirmData, isOpen: false })}
