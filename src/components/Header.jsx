@@ -26,12 +26,15 @@ const Header = ({ theme, toggleTheme }) => {
     return (
         <header
             className={cn(
-                "sticky md:fixed md:left-0 top-0 right-0 z-50 transition-all duration-300",
+                "fixed left-0 md:fixed md:left-0 top-0 right-0 z-50 transition-all duration-300",
                 isScrolled ? "bg-[var(--header-bg)] backdrop-blur-md shadow-sm py-4 border-b border-gray-100 dark:border-white/5" : "bg-transparent py-6"
             )}
         >
             <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-                <a href="#" className="font-serif text-2xl font-semibold dark:text-gray-100 text-text-dark tracking-wide">
+                <a href="#" className={cn(
+                    "font-serif text-2xl font-semibold tracking-wide transition-colors duration-300",
+                    isScrolled ? "text-text-dark dark:text-gray-100" : "text-white drop-shadow-md"
+                )}>
                     Sarah <span className="text-champagne-gold">&</span> Nelson
                 </a>
 
@@ -41,12 +44,15 @@ const Header = ({ theme, toggleTheme }) => {
                         <a
                             key={link.label}
                             href={link.href}
-                            className="text-sm uppercase tracking-widest hover:text-champagne-gold transition-colors duration-200 text-text-primary"
+                            className={cn(
+                                "text-sm uppercase tracking-widest hover:text-champagne-gold transition-colors duration-200",
+                                isScrolled ? "text-text-primary" : "text-white drop-shadow-md"
+                            )}
                         >
                             {link.label}
                         </a>
                     ))}
-                    <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+                    <ThemeToggle theme={theme} toggleTheme={toggleTheme} isTransparent={!isScrolled} />
                     <a href="#rsvp" className="bg-champagne-gold text-white px-6 py-2 rounded-full hover:bg-[#B8860B] transition-colors duration-300 shadow-md">
                         Confirmar Presença
                     </a>
@@ -54,9 +60,9 @@ const Header = ({ theme, toggleTheme }) => {
 
                 {/* Mobile Menu Button */}
                 <div className="flex items-center gap-4 md:hidden">
-                    <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+                    <ThemeToggle theme={theme} toggleTheme={toggleTheme} isTransparent={!isScrolled} />
                     <button
-                        className="text-text-primary"
+                        className={cn("transition-colors duration-300", isScrolled ? "text-text-primary" : "text-white")}
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
                         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}

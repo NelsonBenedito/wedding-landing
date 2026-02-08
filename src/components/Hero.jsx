@@ -3,17 +3,29 @@ import { motion } from 'framer-motion';
 
 const Hero = () => {
     return (
-        <section className="relative h-screen flex items-center justify-center overflow-hidden bg-[var(--background)] transition-colors duration-300">
-            {/* Background Decorative Circles */}
-            <div className="absolute top-[-10%] left-[-10%] w-[50vh] h-[50vh] rounded-full bg-champagne-gold/5 dark:bg-champagne-gold/10 blur-[120px]" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[60vh] h-[60vh] rounded-full bg-champagne-gold/10 dark:bg-champagne-gold/5 blur-[150px]" />
+        <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black transition-colors duration-300">
+            {/* Background Video */}
+            <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover opacity-60 dark:opacity-40"
+            >
+                <source src="/WeddingDancing.mp4" type="video/mp4" />
+                Seu navegador não suporta vídeos.
+            </video>
+
+            {/* Overlay Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-transparent to-transparent opacity-60" />
 
             <div className="container mx-auto px-4 z-10 text-center">
                 <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="text-champagne-gold uppercase tracking-[0.3em] mb-4 text-sm md:text-base font-bold"
+                    className="text-champagne-gold uppercase tracking-[0.3em] mb-4 text-sm md:text-base font-bold drop-shadow-sm"
                 >
                     Nós Vamos Casar
                 </motion.p>
@@ -22,7 +34,7 @@ const Hero = () => {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1, delay: 0.3 }}
-                    className="font-serif text-6xl md:text-8xl lg:text-9xl text-text-primary mb-6 leading-tight"
+                    className="font-serif text-6xl md:text-8xl lg:text-9xl text-white mb-6 leading-tight drop-shadow-lg"
                 >
                     Sarah <span className="text-champagne-gold font-light">&</span> Nelson
                 </motion.h1>
@@ -33,11 +45,11 @@ const Hero = () => {
                     transition={{ duration: 1, delay: 0.6 }}
                     className="flex flex-col items-center gap-4"
                 >
-                    <div className="h-px w-24 bg-champagne-gold/30 dark:bg-champagne-gold/20 my-4" />
-                    <p className="text-xl md:text-2xl text-text-secondary font-light tracking-widest italic font-serif">
+                    <div className="h-px w-24 bg-champagne-gold/40 my-4" />
+                    <p className="text-xl md:text-2xl text-gray-100 font-light tracking-widest italic font-serif drop-shadow-md">
                         22 de Agosto de 2026 • Santa Teresa, Brasil
                     </p>
-                    <div className="h-px w-24 bg-champagne-gold/30 dark:bg-champagne-gold/20 my-4" />
+                    <div className="h-px w-24 bg-champagne-gold/40 my-4" />
                 </motion.div>
 
                 <motion.div
