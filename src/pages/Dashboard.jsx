@@ -43,6 +43,9 @@ export default function Dashboard() {
         await supabase.auth.signOut()
         navigate('/login')
     }
+    const handleHome = () => {
+        navigate('/')
+    }
 
     if (loading) return <div className="p-10 text-center">Loading...</div>
 
@@ -50,7 +53,10 @@ export default function Dashboard() {
         <div className="container mx-auto p-4">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold font-sans">RSVP Dashboard</h1>
-                <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Logout</button>
+                <div className="flex gap-2">
+                    <button onClick={handleHome} className=" text-gray-300 underline px-4 py-2 rounded">Voltar a pagina inicial</button>
+                    <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Logout</button>
+                </div>
             </div>
 
             {/* Stats Section */}

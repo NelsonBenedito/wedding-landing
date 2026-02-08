@@ -31,6 +31,7 @@ function App() {
               <p className="text-xs text-gray-600">
                 © {new Date().getFullYear()} Wedding Landing Page. Desenvolvido por <a href="https://github.com/NelsonBenedito" target='_blank' className="text-red-500">Nelson Benedito</a>
               </p>
+              <a href="/dashboard" className="text-xs text-gray-600">Acessar dashboard</a>
             </footer>
           </div>
         } />
