@@ -22,16 +22,12 @@ const Header = () => {
      ]; */
 
     return (
-        <header
-            className="fixed top-0 left-0 right-0 z-50"
-        >
-            <div className="mx-auto px-4 md:px-6 flex items-center justify-between">
-                <a href="#" className="font-serif text-2xl font-semibold text-text-dark tracking-wide">
-                    Sarah <span className="text-champagne-gold">&</span> Nelson
-                </a>
-
-                {/* Desktop Nav */}
-                {/* <nav className="hidden md:flex items-center space-x-8">
+        <header className="fixed top-0 left-0 right-0 z-50 px-4  md:px-6 flex items-center justify-between">
+            <a href="#" className="font-serif text-2xl font-semibold text-text-dark tracking-wide">
+                Sarah <span className="text-champagne-gold">&</span> Nelson
+            </a>
+            {/* Desktop Nav */}
+            {/* <nav className="hidden md:flex items-center space-x-8">
                     {navLinks.map((link) => (
                         <a
                             key={link.label}
@@ -46,14 +42,14 @@ const Header = () => {
                     </a>
                 </nav> */}
 
-                {/* Mobile Menu Button */}
-                {/* <button
+            {/* Mobile Menu Button */}
+            {/* <button
                     className="md:hidden text-text-dark"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
                     {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                 </button> */}
-            </div>
+
 
             {/* Mobile Nav */}
             {/* {isMobileMenuOpen && (
