@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { cn } from '../lib/utils';
 
-const Header = () => {
+export default function Header() {
     /* const [isScrolled, setIsScrolled] = useState(false); */
     /*     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); */
 
@@ -71,5 +71,3 @@ const Header = () => {
         </header>
     );
 };
-
-export default Header;
