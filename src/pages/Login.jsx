@@ -9,6 +9,9 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
 
+    const handleHome = () => {
+        navigate('/')
+    }
     const handleLogin = async (event) => {
         event.preventDefault()
 
@@ -65,6 +68,7 @@ export default function Login() {
                         >
                             {loading ? 'Loading...' : 'Sign In'}
                         </button>
+                        <button onClick={handleHome} className=" text-gray-300 underline px-4 py-2 rounded">Voltar a pagina inicial</button>
                     </div>
                 </form>
             </div>
