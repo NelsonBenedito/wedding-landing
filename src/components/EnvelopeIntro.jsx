@@ -35,9 +35,34 @@ const EnvelopeIntro = ({ onComplete }) => {
             setStage('presenting');
         }, 3200); // Fully extracted, now bring to front and present
 
-        setTimeout(() => setStage('exit'), 6500);
-        setTimeout(() => onComplete(), 8000);
-    }, [stage, onComplete]);
+    }, [stage]);
+
+    const handleConfirmar = useCallback((e) => {
+        if (e) e.stopPropagation();
+        setStage('exit');
+        setTimeout(() => {
+            onComplete();
+            setTimeout(() => {
+                const rsvpSection = document.getElementById('rsvp');
+                if (rsvpSection) {
+                    rsvpSection.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    window.location.hash = 'rsvp';
+                }
+            }, 100);
+        }, 1800);
+    }, [onComplete]);
+
+    const handleVerSite = useCallback((e) => {
+        if (e) e.stopPropagation();
+        setStage('exit');
+        setTimeout(() => {
+            onComplete();
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 100);
+        }, 1800);
+    }, [onComplete]);
 
     const isOpen = stage !== 'idle';
 
@@ -169,6 +194,9 @@ const EnvelopeIntro = ({ onComplete }) => {
 
                                         <div style={{ position: 'absolute', inset: 'clamp(5px, 2%, 15px)', border: '2px solid rgba(15,36,71,0.4)', borderRadius: '30px', pointerEvents: 'none' }} />
 
+                                        {/* Detalhe Folha Translucida */}
+                                        <div style={{ position: 'absolute', inset: '0', backgroundImage: 'url(/DetalheConvite.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.15, pointerEvents: 'none', borderRadius: '4px' }} />
+
                                         {/* Logo Brasão Substituto */}
                                         <div style={{ position: 'absolute', top: isMobile ? '5px' : '10px', left: '50%', transform: 'translateX(-50%)', width: isMobile ? '65px' : '90px', display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'center', background: '#fffefc', padding: '0 10px' }}>
                                             <img src="/BrasaoSN.png" alt="Brasão Sarah e Nelson" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
@@ -201,8 +229,8 @@ const EnvelopeIntro = ({ onComplete }) => {
                                                 Jolli Mara Hell
                                             </div>
                                             <div style={{ textAlign: 'right', lineHeight: 1.2 }}>
-                                                Robson José &amp;<br />
-                                                Francelia Benedito José &amp;
+                                                Robson José M.<br />
+                                                Francelia Benedito José M.
                                             </div>
                                         </div>
 
@@ -245,10 +273,60 @@ const EnvelopeIntro = ({ onComplete }) => {
                                             margin: 0,
                                             textAlign: 'center',
                                             letterSpacing: '2px',
-                                            textTransform: 'uppercase'
+                                            textTransform: 'uppercase',
+                                            marginBottom: 'clamp(15px, 4vw, 30px)'
                                         }}>
                                             O convidam para a cerimônia do seu casamento
                                         </p>
+
+                                        {/* Botoes de Ação */}
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: stage === 'presenting' ? 1 : 0, y: stage === 'presenting' ? 0 : 10 }}
+                                            transition={{ duration: 0.8, delay: stage === 'presenting' ? 1.5 : 0 }}
+                                            style={{
+                                                display: 'flex',
+                                                gap: isMobile ? '10px' : '15px',
+                                                zIndex: 100,
+                                                pointerEvents: stage === 'presenting' ? 'auto' : 'none'
+                                            }}
+                                        >
+                                            <button
+                                                onClick={handleConfirmar}
+                                                style={{
+                                                    padding: isMobile ? '10px 16px' : '12px 24px',
+                                                    backgroundColor: '#0F4C81',
+                                                    color: 'white',
+                                                    border: '1px solid #0F4C81',
+                                                    borderRadius: '2px',
+                                                    fontFamily: 'sans-serif',
+                                                    fontSize: isMobile ? '9px' : '11px',
+                                                    textTransform: 'uppercase',
+                                                    letterSpacing: '1px',
+                                                    cursor: 'pointer',
+                                                    boxShadow: '0 4px 12px rgba(15,76,129,0.3)',
+                                                }}
+                                            >
+                                                Confirmar Presença
+                                            </button>
+                                            <button
+                                                onClick={handleVerSite}
+                                                style={{
+                                                    padding: isMobile ? '10px 16px' : '12px 24px',
+                                                    backgroundColor: 'transparent',
+                                                    color: '#0F4C81',
+                                                    border: '1px solid rgba(15,76,129,0.3)',
+                                                    borderRadius: '2px',
+                                                    fontFamily: 'sans-serif',
+                                                    fontSize: isMobile ? '9px' : '11px',
+                                                    textTransform: 'uppercase',
+                                                    letterSpacing: '1px',
+                                                    cursor: 'pointer',
+                                                }}
+                                            >
+                                                Explorar o Site
+                                            </button>
+                                        </motion.div>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
