@@ -61,7 +61,7 @@ const RSVP = () => {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="bg-[var(--card-bg)] p-8 md:p-12 shadow-2xl dark:shadow-none rounded-sm border-t-4 border-champagne-gold transition-colors duration-300"
+                    className="bg-[var(--card-bg)] p-8 md:p-12 shadow-2xl dark:shadow-none rounded-sm border-t-4 border-seal-blue transition-colors duration-300"
                 >
                     <div className="text-center mb-10">
                         <h2 className="font-serif text-3xl md:text-5xl mb-4 text-text-primary">RSVP</h2>
@@ -86,7 +86,7 @@ const RSVP = () => {
                             <p className="text-text-secondary">Sua resposta foi recebida com carinho.</p>
                             <button
                                 onClick={() => { setIsSuccess(false); setFormData({ name: '', attendance: '', message: '' }); }}
-                                className="mt-8 text-xs font-bold uppercase tracking-widest text-champagne-gold hover:text-[#B8860B] transition-colors"
+                                className="mt-8 text-xs font-bold uppercase tracking-widest text-seal-blue hover:text-[#0A355A] transition-colors"
                             >
                                 Enviar outra resposta
                             </button>
@@ -100,7 +100,7 @@ const RSVP = () => {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className={`w-full p-4 bg-transparent border ${errors.name ? 'border-red-500' : 'border-gray-200 dark:border-white/10'} focus:outline-none focus:border-champagne-gold transition-colors text-text-primary text-sm rounded-sm`}
+                                    className={`w-full p-4 bg-transparent border ${errors.name ? 'border-red-500' : 'border-gray-200 dark:border-white/10'} focus:outline-none focus:border-seal-blue transition-colors text-text-primary text-sm rounded-sm`}
                                     placeholder="Nome(s) do(s) Convidado(s)"
                                 />
                                 {errors.name && <p className="text-[10px] text-red-500 mt-2 font-bold uppercase tracking-wider">{errors.name}</p>}
@@ -118,7 +118,7 @@ const RSVP = () => {
                                             onChange={handleChange}
                                             className="peer sr-only"
                                         />
-                                        <div className="p-4 text-center border border-gray-200 dark:border-white/10 peer-checked:border-champagne-gold peer-checked:bg-champagne-gold peer-checked:text-white transition-all hover:bg-gray-50 dark:hover:bg-white/5 text-sm font-bold uppercase tracking-widest text-text-secondary rounded-sm">
+                                        <div className="p-4 text-center border border-gray-200 dark:border-white/10 peer-checked:border-seal-blue peer-checked:bg-seal-blue peer-checked:text-white transition-all hover:bg-gray-50 dark:hover:bg-white/5 text-sm font-bold uppercase tracking-widest text-text-secondary rounded-sm">
                                             Com Certeza!
                                         </div>
                                     </label>
@@ -146,7 +146,7 @@ const RSVP = () => {
                                     value={formData.message}
                                     onChange={handleChange}
                                     rows="4"
-                                    className="w-full p-4 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary text-sm resize-none rounded-sm"
+                                    className="w-full p-4 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-seal-blue transition-colors text-text-primary text-sm resize-none rounded-sm"
                                     placeholder="Nos avise se tiver alguma restrição alimentar ou apenas deixe um recado..."
                                 ></textarea>
                             </div>
@@ -154,7 +154,7 @@ const RSVP = () => {
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full bg-champagne-gold text-white py-5 font-bold uppercase tracking-[0.2em] hover:bg-[#B8860B] transition-all duration-300 disabled:opacity-70 flex items-center justify-center gap-2 shadow-lg shadow-champagne-gold/20 text-xs rounded-sm"
+                                className="w-full bg-seal-blue text-white py-5 font-bold uppercase tracking-[0.2em] hover:bg-[#0A355A] transition-all duration-300 disabled:opacity-70 flex items-center justify-center gap-2 shadow-lg shadow-seal-blue/20 text-xs rounded-sm"
                             >
                                 {isSubmitting ? (
                                     <>

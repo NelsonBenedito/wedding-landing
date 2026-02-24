@@ -13,7 +13,7 @@ const ThemeToggle = ({ theme, toggleTheme, isTransparent }) => {
             {theme === 'light' ? (
                 <Moon size={20} className={isTransparent ? "text-white drop-shadow-sm" : "text-text-secondary"} />
             ) : (
-                <Sun size={20} className={isTransparent ? "text-white" : "text-champagne-gold"} />
+                <Sun size={20} className={isTransparent ? "text-white" : "text-seal-blue"} />
             )}
         </motion.button>
     );

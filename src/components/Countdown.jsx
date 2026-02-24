@@ -34,7 +34,7 @@ const Countdown = () => {
     const TimeUnit = ({ value, label }) => (
         <div className="flex flex-col items-center">
             <div className="bg-[var(--card-bg)] w-20 h-20 md:w-28 md:h-28 rounded-sm shadow-lg flex items-center justify-center border border-gray-100 dark:border-white/5 transition-colors duration-300">
-                <span className="font-serif text-3xl md:text-5xl text-champagne-gold">{value.toString().padStart(2, '0')}</span>
+                <span className="font-serif text-3xl md:text-5xl text-seal-blue">{value.toString().padStart(2, '0')}</span>
             </div>
             <span className="mt-3 text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary">{label}</span>
         </div>

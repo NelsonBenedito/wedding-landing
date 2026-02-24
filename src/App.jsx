@@ -62,7 +62,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={
-            <div className="min-h-screen bg-[var(--background)] font-sans text-[var(--text-primary)] selection:bg-champagne-gold selection:text-white transition-colors duration-300">
+            <div className="min-h-screen overflow-x-hidden bg-[var(--background)] font-sans text-[var(--text-primary)] selection:bg-seal-blue selection:text-white transition-colors duration-300">
               <Header theme={theme} toggleTheme={toggleTheme} />
               <main>
                 <Hero />
@@ -79,7 +79,7 @@ function App() {
                 <p className="text-xs text-gray-600 dark:text-gray-500">
                   © {new Date().getFullYear()} Wedding Landing Page. Desenvolvido por <a href="https://github.com/NelsonBenedito" target='_blank' className="text-red-500">Nelson Benedito</a>
                 </p>
-                <a href="/dashboard" className="text-xs text-gray-600 dark:text-gray-500 hover:text-champagne-gold transition-colors">Acessar dashboard</a>
+                <a href="/dashboard" className="text-xs text-gray-600 dark:text-gray-500 hover:text-seal-blue transition-colors">Acessar dashboard</a>
               </footer>
             </div>
           } />

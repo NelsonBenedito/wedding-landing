@@ -36,14 +36,14 @@ const Registry = () => {
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -10 }}
                             onClick={() => setSelectedGift(item)}
-                            className="bg-[var(--card-bg)] p-10 text-center border border-gray-100 dark:border-white/5 hover:border-champagne-gold/50 cursor-pointer transition-all shadow-sm hover:shadow-xl dark:shadow-none duration-300 group rounded-sm"
+                            className="bg-[var(--card-bg)] p-10 text-center border border-gray-100 dark:border-white/5 hover:border-seal-blue/50 cursor-pointer transition-all shadow-sm hover:shadow-xl dark:shadow-none duration-300 group rounded-sm"
                         >
                             <div className="text-5xl mb-6 grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-110">
                                 {item.icon}
                             </div>
                             <h3 className="font-serif text-2xl mb-2 text-text-primary">{item.title}</h3>
-                            <p className="text-champagne-gold font-bold mb-6 text-lg">{item.price ? `R$ ${item.price}` : 'Valor à sua escolha'}</p>
-                            <button className="text-[10px] uppercase tracking-[0.2em] font-bold border-b border-gray-200 dark:border-white/10 group-hover:border-champagne-gold pb-1 transition-colors text-text-secondary group-hover:text-champagne-gold">
+                            <p className="text-seal-blue font-bold mb-6 text-lg">{item.price ? `R$ ${item.price}` : 'Valor à sua escolha'}</p>
+                            <button className="text-[10px] uppercase tracking-[0.2em] font-bold border-b border-gray-200 dark:border-white/10 group-hover:border-seal-blue pb-1 transition-colors text-text-secondary group-hover:text-seal-blue">
                                 Presentear
                             </button>
                         </motion.div>

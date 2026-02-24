@@ -92,7 +92,7 @@ const EditGiftModal = ({ isOpen, onClose, onSave, gift }) => {
                                         <input
                                             type="text"
                                             required
-                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-champagne-gold transition-colors"
+                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-seal-blue transition-colors"
                                             value={formData.donor_name}
                                             onChange={(e) => setFormData({ ...formData, donor_name: e.target.value })}
                                         />
@@ -103,7 +103,7 @@ const EditGiftModal = ({ isOpen, onClose, onSave, gift }) => {
                                             type="number"
                                             step="0.01"
                                             required
-                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-champagne-gold transition-colors"
+                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-seal-blue transition-colors"
                                             value={formData.amount}
                                             onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                                         />
@@ -111,7 +111,7 @@ const EditGiftModal = ({ isOpen, onClose, onSave, gift }) => {
                                     <div>
                                         <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-1 font-bold">Mensagem</label>
                                         <textarea
-                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-champagne-gold transition-colors h-24"
+                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-seal-blue transition-colors h-24"
                                             value={formData.message}
                                             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                         />
@@ -128,7 +128,7 @@ const EditGiftModal = ({ isOpen, onClose, onSave, gift }) => {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 px-4 py-5 text-xs font-bold uppercase tracking-widest text-white bg-champagne-gold hover:bg-[#B8860B] transition-colors"
+                                    className="flex-1 px-4 py-5 text-xs font-bold uppercase tracking-widest text-white bg-seal-blue hover:bg-[#0A355A] transition-colors"
                                 >
                                     Salvar Alterações
                                 </button>
@@ -184,7 +184,7 @@ const EditExpenseModal = ({ isOpen, onClose, onSave, expense }) => {
                                         <input
                                             type="text"
                                             required
-                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-champagne-gold transition-colors"
+                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-seal-blue transition-colors"
                                             value={formData.description}
                                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                         />
@@ -195,7 +195,7 @@ const EditExpenseModal = ({ isOpen, onClose, onSave, expense }) => {
                                             type="number"
                                             step="0.01"
                                             required
-                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-champagne-gold transition-colors"
+                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-seal-blue transition-colors"
                                             value={formData.amount}
                                             onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                                         />
@@ -203,7 +203,7 @@ const EditExpenseModal = ({ isOpen, onClose, onSave, expense }) => {
                                     <div>
                                         <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-1 font-bold">Categoria</label>
                                         <select
-                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-champagne-gold transition-colors"
+                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-seal-blue transition-colors"
                                             value={formData.category}
                                             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                                         >
@@ -220,7 +220,7 @@ const EditExpenseModal = ({ isOpen, onClose, onSave, expense }) => {
                                     <div>
                                         <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-1 font-bold">Status</label>
                                         <select
-                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-champagne-gold transition-colors"
+                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-seal-blue transition-colors"
                                             value={formData.status}
                                             onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                                         >
@@ -505,20 +505,20 @@ export default function Dashboard({ theme, toggleTheme }) {
                 <div className="flex border-b border-gray-100 dark:border-white/10 mb-8 overflow-x-auto">
                     <button
                         onClick={() => setActiveTab('presence')}
-                        className={`px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all relative shrink-0 ${activeTab === 'presence' ? 'text-champagne-gold' : 'text-text-secondary hover:text-text-primary'}`}
+                        className={`px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all relative shrink-0 ${activeTab === 'presence' ? 'text-seal-blue' : 'text-text-secondary hover:text-text-primary'}`}
                     >
                         Presença
                         {activeTab === 'presence' && (
-                            <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-champagne-gold" />
+                            <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-seal-blue" />
                         )}
                     </button>
                     <button
                         onClick={() => setActiveTab('finance')}
-                        className={`px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all relative shrink-0 ${activeTab === 'finance' ? 'text-champagne-gold' : 'text-text-secondary hover:text-text-primary'}`}
+                        className={`px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all relative shrink-0 ${activeTab === 'finance' ? 'text-seal-blue' : 'text-text-secondary hover:text-text-primary'}`}
                     >
                         Finanças
                         {activeTab === 'finance' && (
-                            <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-champagne-gold" />
+                            <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-seal-blue" />
                         )}
                     </button>
                 </div>
@@ -598,7 +598,7 @@ export default function Dashboard({ theme, toggleTheme }) {
                                             </div>
                                             <div className="w-full bg-gray-100 dark:bg-white/5 h-2 rounded-full overflow-hidden">
                                                 <div
-                                                    className={`h-full transition-all duration-1000 ${occupancyRate > 100 ? 'bg-red-500' : 'bg-champagne-gold'}`}
+                                                    className={`h-full transition-all duration-1000 ${occupancyRate > 100 ? 'bg-red-500' : 'bg-seal-blue'}`}
                                                     style={{ width: `${Math.min(occupancyRate, 100)}%` }}
                                                 />
                                             </div>
@@ -728,14 +728,14 @@ export default function Dashboard({ theme, toggleTheme }) {
                                     </div>
 
                                     <div className="bg-[var(--card-bg)] rounded-sm shadow-sm border border-gray-100 dark:border-white/5 overflow-hidden">
-                                        <form onSubmit={handleAddGift} className="p-6 bg-champagne-gold/5 border-b border-gray-100 dark:border-white/5 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                                        <form onSubmit={handleAddGift} className="p-6 bg-seal-blue/5 border-b border-gray-100 dark:border-white/5 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
                                             <div>
                                                 <label className="block text-[10px] uppercase tracking-widest text-text-secondary mb-1 font-bold">Doador</label>
                                                 <input
                                                     type="text"
                                                     required
                                                     placeholder="Ex: Tio João"
-                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary"
+                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-seal-blue transition-colors text-text-primary"
                                                     value={newGift.donor_name}
                                                     onChange={(e) => setNewGift({ ...newGift, donor_name: e.target.value })}
                                                 />
@@ -747,7 +747,7 @@ export default function Dashboard({ theme, toggleTheme }) {
                                                     step="0.01"
                                                     required
                                                     placeholder="0,00"
-                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary"
+                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-seal-blue transition-colors text-text-primary"
                                                     value={newGift.amount}
                                                     onChange={(e) => setNewGift({ ...newGift, amount: e.target.value })}
                                                 />
@@ -757,14 +757,14 @@ export default function Dashboard({ theme, toggleTheme }) {
                                                 <input
                                                     type="text"
                                                     placeholder="Uma mensagem carinhosa..."
-                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary"
+                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-seal-blue transition-colors text-text-primary"
                                                     value={newGift.message}
                                                     onChange={(e) => setNewGift({ ...newGift, message: e.target.value })}
                                                 />
                                             </div>
                                             <button
                                                 type="submit"
-                                                className="bg-champagne-gold text-white p-3 flex items-center justify-center gap-2 font-bold hover:bg-[#B8860B] transition-colors shadow-sm uppercase tracking-widest text-[10px]"
+                                                className="bg-seal-blue text-white p-3 flex items-center justify-center gap-2 font-bold hover:bg-[#0A355A] transition-colors shadow-sm uppercase tracking-widest text-[10px]"
                                             >
                                                 <Plus size={16} /> Adicionar
                                             </button>
@@ -794,7 +794,7 @@ export default function Dashboard({ theme, toggleTheme }) {
                                                                 <div className="flex items-center justify-center gap-2">
                                                                     <button
                                                                         onClick={() => setEditingGift(gift)}
-                                                                        className="text-champagne-gold hover:text-[#B8860B] p-2 transition-colors"
+                                                                        className="text-seal-blue hover:text-[#0A355A] p-2 transition-colors"
                                                                     >
                                                                         <Pencil size={18} />
                                                                     </button>
@@ -833,7 +833,7 @@ export default function Dashboard({ theme, toggleTheme }) {
                                                     type="text"
                                                     required
                                                     placeholder="Ex: Buffet, Local..."
-                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary"
+                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-seal-blue transition-colors text-text-primary"
                                                     value={newExpense.description}
                                                     onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
                                                 />
@@ -845,7 +845,7 @@ export default function Dashboard({ theme, toggleTheme }) {
                                                     step="0.01"
                                                     required
                                                     placeholder="0,00"
-                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary"
+                                                    className="w-full text-sm p-3 bg-transparent border border-gray-200 dark:border-white/10 focus:outline-none focus:border-seal-blue transition-colors text-text-primary"
                                                     value={newExpense.amount}
                                                     onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
                                                 />
@@ -853,7 +853,7 @@ export default function Dashboard({ theme, toggleTheme }) {
                                             <div>
                                                 <label className="block text-[10px] uppercase tracking-widest text-text-secondary mb-1 font-bold">Categoria</label>
                                                 <select
-                                                    className="w-full text-sm p-3 bg-[var(--card-bg)] border border-gray-200 dark:border-white/10 focus:outline-none focus:border-champagne-gold transition-colors text-text-primary"
+                                                    className="w-full text-sm p-3 bg-[var(--card-bg)] border border-gray-200 dark:border-white/10 focus:outline-none focus:border-seal-blue transition-colors text-text-primary"
                                                     value={newExpense.category}
                                                     onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
                                                 >
@@ -906,7 +906,7 @@ export default function Dashboard({ theme, toggleTheme }) {
                                                                 <div className="flex items-center justify-center gap-2">
                                                                     <button
                                                                         onClick={() => setEditingExpense(expense)}
-                                                                        className="text-champagne-gold hover:text-[#B8860B] p-2 transition-colors"
+                                                                        className="text-seal-blue hover:text-[#0A355A] p-2 transition-colors"
                                                                     >
                                                                         <Pencil size={18} />
                                                                     </button>

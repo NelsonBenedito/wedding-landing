@@ -9,8 +9,9 @@ export default {
     extend: {
       colors: {
         'wedding-white': '#FAFAFA',
-        'champagne-gold': '#D4AF37',
-        'gold-light': '#F3E5AB', // Lighter gold for backgrounds/accents
+        'seal-blue': '#0F4C81',
+        'seal-blue-light': '#85AEDB',
+        'seal-light': '#E6EEF4', // Lighter gold for backgrounds/accents
         'text-dark': '#333333',
         'text-muted': '#666666',
       },

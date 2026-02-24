@@ -46,9 +46,9 @@ export default function Login({ theme, toggleTheme }) {
                     <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="inline-block p-4 bg-champagne-gold/10 rounded-full mb-4"
+                        className="inline-block p-4 bg-seal-blue/10 rounded-full mb-4"
                     >
-                        <Heart className="text-champagne-gold" size={32} fill="currentColor" />
+                        <Heart className="text-seal-blue" size={32} fill="currentColor" />
                     </motion.div>
                     <h1 className="text-3xl font-serif text-text-primary mb-2">Painel de Controle</h1>
                     <p className="text-text-secondary text-sm uppercase tracking-widest">Acesso Restrito</p>
@@ -66,7 +66,7 @@ export default function Login({ theme, toggleTheme }) {
                                         <Mail size={18} />
                                     </div>
                                     <input
-                                        className="w-full pl-10 pr-4 py-3 bg-transparent border border-gray-200 dark:border-white/10 rounded-sm text-text-primary focus:outline-none focus:border-champagne-gold transition-colors text-sm"
+                                        className="w-full pl-10 pr-4 py-3 bg-transparent border border-gray-200 dark:border-white/10 rounded-sm text-text-primary focus:outline-none focus:border-seal-blue transition-colors text-sm"
                                         id="email"
                                         type="email"
                                         placeholder="seu@email.com"
@@ -85,7 +85,7 @@ export default function Login({ theme, toggleTheme }) {
                                         <Lock size={18} />
                                     </div>
                                     <input
-                                        className="w-full pl-10 pr-4 py-3 bg-transparent border border-gray-200 dark:border-white/10 rounded-sm text-text-primary focus:outline-none focus:border-champagne-gold transition-colors text-sm"
+                                        className="w-full pl-10 pr-4 py-3 bg-transparent border border-gray-200 dark:border-white/10 rounded-sm text-text-primary focus:outline-none focus:border-seal-blue transition-colors text-sm"
                                         id="password"
                                         type="password"
                                         placeholder="••••••••"
@@ -98,7 +98,7 @@ export default function Login({ theme, toggleTheme }) {
                         </div>
 
                         <button
-                            className="w-full mt-10 bg-champagne-gold text-white font-bold py-4 rounded-sm hover:bg-[#B8860B] transition-colors duration-300 shadow-md uppercase tracking-widest text-xs disabled:opacity-50"
+                            className="w-full mt-10 bg-seal-blue text-white font-bold py-4 rounded-sm hover:bg-[#0A355A] transition-colors duration-300 shadow-md uppercase tracking-widest text-xs disabled:opacity-50"
                             type="submit"
                             disabled={loading}
                         >
@@ -109,7 +109,7 @@ export default function Login({ theme, toggleTheme }) {
                     <div className="px-8 pb-8 text-center">
                         <button
                             onClick={handleHome}
-                            className="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest text-text-secondary hover:text-champagne-gold transition-colors font-bold"
+                            className="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest text-text-secondary hover:text-seal-blue transition-colors font-bold"
                         >
                             <ArrowLeft size={14} />
                             Voltar para o site

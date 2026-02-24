@@ -35,7 +35,7 @@ const Header = ({ theme, toggleTheme }) => {
                     "font-serif text-2xl font-semibold tracking-wide transition-colors duration-300",
                     isScrolled ? "text-text-dark dark:text-gray-100" : "text-white drop-shadow-md"
                 )}>
-                    Sarah <span className="text-champagne-gold">&</span> Nelson
+                    Sarah <span className={isScrolled ? "text-seal-blue" : "text-seal-blue-light"}>&</span> Nelson
                 </a>
 
                 {/* Desktop Nav */}
@@ -45,15 +45,17 @@ const Header = ({ theme, toggleTheme }) => {
                             key={link.label}
                             href={link.href}
                             className={cn(
-                                "text-sm uppercase tracking-widest hover:text-champagne-gold transition-colors duration-200",
-                                isScrolled ? "text-text-primary" : "text-white drop-shadow-md"
+                                "text-sm uppercase tracking-widest transition-colors duration-200",
+                                isScrolled
+                                    ? "text-text-primary hover:text-seal-blue"
+                                    : "text-white drop-shadow-md hover:text-seal-blue-light"
                             )}
                         >
                             {link.label}
                         </a>
                     ))}
                     <ThemeToggle theme={theme} toggleTheme={toggleTheme} isTransparent={!isScrolled} />
-                    <a href="#rsvp" className="bg-champagne-gold text-white px-6 py-2 rounded-full hover:bg-[#B8860B] transition-colors duration-300 shadow-md">
+                    <a href="#rsvp" className="bg-seal-blue text-white px-6 py-2 rounded-full hover:bg-[#0A355A] transition-colors duration-300 shadow-md">
                         Confirmar Presença
                     </a>
                 </nav>
@@ -84,7 +86,7 @@ const Header = ({ theme, toggleTheme }) => {
                                 <a
                                     key={link.label}
                                     href={link.href}
-                                    className="text-text-dark font-medium hover:text-champagne-gold"
+                                    className="text-text-dark font-medium hover:text-seal-blue"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
                                     {link.label}

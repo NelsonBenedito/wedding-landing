@@ -63,14 +63,16 @@ const EnvelopeIntro = ({ onComplete }) => {
         ? `M 0,0 H ${W} V ${H} H 0 Z`
         : `M ${R},0 h ${W - 2 * R} a ${R},${R} 0 0 1 ${R},${R} v ${H - 2 * R} a ${R},${R} 0 0 1 -${R},${R} h -${W - 2 * R} a ${R},${R} 0 0 1 -${R},-${R} v -${H - 2 * R} a ${R},${R} 0 0 1 ${R},-${R} z`;
 
-    const flapPath = `M 0,0 H ${W} L ${FX},${FY} L 0,0 Z`;
+    const flapPath = isMobile
+        ? `M 0,0 H ${W} L ${FX},${FY} L 0,0 Z`
+        : `M ${R},0 H ${W - R} A ${R},${R} 0 0 1 ${W},${R} L ${FX},${FY} L 0,${R} A ${R},${R} 0 0 1 ${R},0 Z`;
 
     return (
         <AnimatePresence>
             {stage !== 'done' && (
                 <motion.div
                     key="envelope-overlay"
-                    className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden bg-[#05080f]"
+                    className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#05080f] w-full h-full m-0 p-0 overflow-hidden"
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1.8, ease: 'easeInOut' }}
                 >
@@ -86,12 +88,13 @@ const EnvelopeIntro = ({ onComplete }) => {
                         />
                     ))}
 
-                    <div className="relative flex flex-col items-center justify-center"
+                    <div className="relative flex flex-col items-center justify-center w-full max-w-full"
                         style={{
                             perspective: '2000px',
                             width: isMobile ? '100%' : '92vw',
-                            height: isMobile ? '100dvh' : 'auto',
-                            maxWidth: isMobile ? 'none' : '1100px'
+                            height: isMobile ? '100%' : 'auto',
+                            maxHeight: '100dvh',
+                            maxWidth: isMobile ? '100%' : '1100px',
                         }}>
 
                         <div className="relative" style={{
@@ -142,10 +145,10 @@ const EnvelopeIntro = ({ onComplete }) => {
                                         key="inner-card"
                                         style={{
                                             position: 'absolute',
-                                            top: isMobile ? '7.5%' : '15%',
+                                            top: isMobile ? '5%' : '15%',
                                             left: '50%', translateX: '-50%',
                                             width: isMobile ? '90%' : '88%',
-                                            height: isMobile ? '85%' : '80%',
+                                            height: isMobile ? '88%' : '80%',
                                             zIndex: isCardLeading ? 60 : 30,
                                             background: '#fffefc', borderRadius: isMobile ? 4 : 4,
                                             boxShadow: isCardLeading ? '0 30px 90px rgba(0,0,0,0.3)' : '0 12px 60px rgba(0,0,0,0.15)',
@@ -156,55 +159,95 @@ const EnvelopeIntro = ({ onComplete }) => {
                                         }}
                                         initial={{ y: 80, opacity: 0 }}
                                         animate={{
-                                            y: stage === 'extracting' ? '-115%' : (stage === 'presenting' || stage === 'exit') ? (isMobile ? '-8.5%' : '-18%') : 20,
-                                            scale: (stage === 'presenting' || stage === 'exit') ? (isMobile ? 1.15 : 1.25) : 1,
+                                            y: stage === 'extracting' ? '-115%' : (stage === 'presenting' || stage === 'exit') ? (isMobile ? '2%' : '-10%') : 20,
+                                            scale: (stage === 'presenting' || stage === 'exit') ? (isMobile ? 1.05 : 1.15) : 1,
                                             opacity: (stage === 'extracting' || stage === 'presenting' || stage === 'exit') ? 1 : 0.5
                                         }}
                                         transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
                                     >
                                         <div style={{ position: 'absolute', inset: 'clamp(10px, 3%, 20px)', border: '1px solid rgba(15,36,71,0.06)', borderRadius: '2px', pointerEvents: 'none' }} />
 
+                                        <div style={{ position: 'absolute', inset: 'clamp(5px, 2%, 15px)', border: '2px solid rgba(15,36,71,0.4)', borderRadius: '30px', pointerEvents: 'none' }} />
+
+                                        {/* Logo Brasão Substituto */}
+                                        <div style={{ position: 'absolute', top: isMobile ? '5px' : '10px', left: '50%', transform: 'translateX(-50%)', width: isMobile ? '65px' : '90px', display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'center', background: '#fffefc', padding: '0 10px' }}>
+                                            <img src="/BrasaoSN.png" alt="Brasão Sarah e Nelson" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
+                                        </div>
+
                                         <p style={{
-                                            fontFamily: 'serif',
-                                            fontSize: isMobile ? '10px' : 'clamp(8px, 2.5vw, 11px)',
+                                            fontFamily: 'sans-serif',
+                                            fontSize: isMobile ? '8px' : 'clamp(9px, 1vw, 12px)',
                                             color: '#0F2447',
-                                            letterSpacing: '0.45em',
-                                            textTransform: 'uppercase',
-                                            marginBottom: 'clamp(20px, 5vw, 30px)',
-                                            opacity: 0.4,
-                                            textAlign: 'center'
+                                            marginTop: 'clamp(35px, 8vw, 60px)',
+                                            marginBottom: 'clamp(15px, 2.5vw, 30px)',
+                                            textAlign: 'center',
+                                            fontStyle: 'italic',
+                                            letterSpacing: '1px'
                                         }}>
-                                            Convite de Casamento
+                                            Com a benção de Deus e de seus pais
                                         </p>
 
+                                        <div style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            width: '85%',
+                                            fontFamily: '"Pinyon Script", "Great Vibes", cursive',
+                                            fontSize: isMobile ? '12px' : 'clamp(14px, 1.8vw, 18px)',
+                                            color: '#555',
+                                            marginBottom: 'clamp(20px, 4vw, 40px)'
+                                        }}>
+                                            <div style={{ textAlign: 'left', lineHeight: 1.2 }}>
+                                                Tiago Hell<br />
+                                                Jolli Mara Hell
+                                            </div>
+                                            <div style={{ textAlign: 'right', lineHeight: 1.2 }}>
+                                                Robson José &amp;<br />
+                                                Francelia Benedito José &amp;
+                                            </div>
+                                        </div>
+
                                         <h2 style={{
-                                            fontFamily: 'serif',
-                                            fontSize: isMobile ? '34px' : 'clamp(32px, 6vw, 42px)',
+                                            fontFamily: '"Pinyon Script", "Great Vibes", cursive',
+                                            fontSize: isMobile ? '32px' : 'clamp(36px, 5.5vw, 52px)',
                                             color: '#0F2447',
                                             textAlign: 'center',
                                             fontWeight: 'normal',
                                             margin: 0,
-                                            lineHeight: 1.1,
-                                            wordBreak: 'break-word'
+                                            lineHeight: 1,
                                         }}>
-                                            {isMobile ? (<>Sarah<br /><span style={{ color: '#0F4C81', fontStyle: 'italic', fontWeight: '300', fontSize: '0.75em' }}>&</span><br />Nelson</>) : (<>Sarah <span style={{ color: '#0F4C81', fontStyle: 'italic', fontWeight: '300' }}>&</span> Nelson</>)}
+                                            Sarah Luiza de Morais Hell
                                         </h2>
 
-                                        <div style={{ width: '35px', height: '1px', background: 'rgba(0,0,0,0.1)', margin: '35px 0' }} />
+                                        <div style={{
+                                            fontFamily: '"Pinyon Script", "Great Vibes", cursive',
+                                            fontSize: isMobile ? '28px' : 'clamp(32px, 4vw, 42px)',
+                                            color: '#0F2447',
+                                            margin: '-5px 0'
+                                        }}>&amp;</div>
+
+                                        <h2 style={{
+                                            fontFamily: '"Pinyon Script", "Great Vibes", cursive',
+                                            fontSize: isMobile ? '32px' : 'clamp(36px, 5.5vw, 52px)',
+                                            color: '#0F2447',
+                                            textAlign: 'center',
+                                            fontWeight: 'normal',
+                                            margin: 0,
+                                            lineHeight: 1,
+                                            marginBottom: 'clamp(30px, 5vw, 50px)'
+                                        }}>
+                                            Nelson Benedito José Maria
+                                        </h2>
 
                                         <p style={{
-                                            fontFamily: 'serif',
-                                            fontSize: isMobile ? '19px' : 'clamp(14px, 4.5vw, 18px)',
-                                            color: '#1a3a6e',
-                                            fontStyle: 'italic',
+                                            fontFamily: '"Cinzel", serif',
+                                            fontSize: isMobile ? '9px' : 'clamp(10px, 1.2vw, 13px)',
+                                            color: '#0F2447',
                                             margin: 0,
                                             textAlign: 'center',
-                                            lineHeight: 1.5
+                                            letterSpacing: '2px',
+                                            textTransform: 'uppercase'
                                         }}>
-                                            22 de Agosto de 2026<br />
-                                            <span style={{ fontSize: '0.7em', fontStyle: 'normal', letterSpacing: '0.18em', textTransform: 'uppercase', opacity: 0.8, display: 'block', marginTop: '12px' }}>
-                                                Santa Teresa, Brasil
-                                            </span>
+                                            O convidam para a cerimônia do seu casamento
                                         </p>
                                     </motion.div>
                                 )}
