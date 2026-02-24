@@ -198,19 +198,19 @@ const EnvelopeIntro = ({ onComplete }) => {
                                         <div style={{ position: 'absolute', inset: '0', backgroundImage: 'url(/DetalheConvite.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.15, pointerEvents: 'none', borderRadius: '4px' }} />
 
                                         {/* Logo Brasão Substituto */}
-                                        <div style={{ position: 'absolute', top: isMobile ? '5px' : '10px', left: '50%', transform: 'translateX(-50%)', width: isMobile ? '65px' : '90px', display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'center', background: '#fffefc', padding: '0 10px' }}>
+                                        <div style={{ position: 'absolute', top: isMobile ? '5px' : '10px', left: '50%', transform: 'translateX(-50%)', width: isMobile ? '65px' : '90px', display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'center', background: 'transparent', padding: '0 10px' }}>
                                             <img src="/BrasaoSN.png" alt="Brasão Sarah e Nelson" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
                                         </div>
 
                                         <p style={{
-                                            fontFamily: 'sans-serif',
+                                            fontFamily: '"Cinzel", serif',
                                             fontSize: isMobile ? '8px' : 'clamp(9px, 1vw, 12px)',
                                             color: '#0F2447',
                                             marginTop: 'clamp(35px, 8vw, 60px)',
                                             marginBottom: 'clamp(15px, 2.5vw, 30px)',
                                             textAlign: 'center',
-                                            fontStyle: 'italic',
-                                            letterSpacing: '1px'
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '2px'
                                         }}>
                                             Com a benção de Deus e de seus pais
                                         </p>
@@ -286,7 +286,9 @@ const EnvelopeIntro = ({ onComplete }) => {
                                             transition={{ duration: 0.8, delay: stage === 'presenting' ? 1.5 : 0 }}
                                             style={{
                                                 display: 'flex',
-                                                gap: isMobile ? '10px' : '15px',
+                                                flexWrap: 'wrap',
+                                                justifyContent: 'center',
+                                                gap: isMobile ? '6px' : '15px',
                                                 zIndex: 100,
                                                 pointerEvents: stage === 'presenting' ? 'auto' : 'none'
                                             }}
@@ -294,13 +296,13 @@ const EnvelopeIntro = ({ onComplete }) => {
                                             <button
                                                 onClick={handleConfirmar}
                                                 style={{
-                                                    padding: isMobile ? '10px 16px' : '12px 24px',
+                                                    padding: isMobile ? '8px 10px' : '12px 24px',
                                                     backgroundColor: '#0F4C81',
                                                     color: 'white',
                                                     border: '1px solid #0F4C81',
                                                     borderRadius: '2px',
                                                     fontFamily: 'sans-serif',
-                                                    fontSize: isMobile ? '9px' : '11px',
+                                                    fontSize: isMobile ? '8px' : '11px',
                                                     textTransform: 'uppercase',
                                                     letterSpacing: '1px',
                                                     cursor: 'pointer',
@@ -312,13 +314,13 @@ const EnvelopeIntro = ({ onComplete }) => {
                                             <button
                                                 onClick={handleVerSite}
                                                 style={{
-                                                    padding: isMobile ? '10px 16px' : '12px 24px',
+                                                    padding: isMobile ? '8px 10px' : '12px 24px',
                                                     backgroundColor: 'transparent',
                                                     color: '#0F4C81',
                                                     border: '1px solid rgba(15,76,129,0.3)',
                                                     borderRadius: '2px',
                                                     fontFamily: 'sans-serif',
-                                                    fontSize: isMobile ? '9px' : '11px',
+                                                    fontSize: isMobile ? '8px' : '11px',
                                                     textTransform: 'uppercase',
                                                     letterSpacing: '1px',
                                                     cursor: 'pointer',
