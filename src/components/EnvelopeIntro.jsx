@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const EnvelopeIntro = ({ onComplete }) => {
     const [stage, setStage] = useState('idle'); // idle | opening | extracting | presenting | exit
     const [isCardLeading, setIsCardLeading] = useState(false); // Controls if card is in front of pocket
+    const [assetsLoaded, setAssetsLoaded] = useState(false);
     const [dimensions, setDimensions] = useState({
         w: typeof window !== 'undefined' ? window.innerWidth : 600,
         h: typeof window !== 'undefined' ? window.innerHeight : 400,
@@ -20,6 +21,31 @@ const EnvelopeIntro = ({ onComplete }) => {
         };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        const imagesToLoad = [
+            '/TexturaPapel.png',
+            '/SeloSn.png',
+            '/TexturaConvite.jpg',
+            '/DetalheConvite.png',
+            '/BrasaoSN.png'
+        ];
+
+        let loadedCount = 0;
+        const checkDone = () => {
+            loadedCount++;
+            if (loadedCount === imagesToLoad.length) {
+                setAssetsLoaded(true);
+            }
+        };
+
+        imagesToLoad.forEach(src => {
+            const img = new Image();
+            img.onload = checkDone;
+            img.onerror = checkDone;
+            img.src = src;
+        });
     }, []);
 
     const handleOpen = useCallback(() => {
@@ -113,7 +139,11 @@ const EnvelopeIntro = ({ onComplete }) => {
                         />
                     ))}
 
-                    <div className="relative flex flex-col items-center justify-center w-full max-w-full"
+                    <motion.div
+                        className="relative flex flex-col items-center justify-center w-full max-w-full"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: assetsLoaded ? 1 : 0 }}
+                        transition={{ duration: 0.8 }}
                         style={{
                             perspective: '2000px',
                             width: isMobile ? '100%' : '92vw',
@@ -374,7 +404,7 @@ const EnvelopeIntro = ({ onComplete }) => {
 
                         {/* HINT */}
                         <AnimatePresence>
-                            {stage === 'idle' && (
+                            {stage === 'idle' && assetsLoaded && (
                                 <motion.div key="hint"
                                     className="absolute bottom-10 flex flex-col items-center gap-2 pointer-events-none"
                                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -387,7 +417,7 @@ const EnvelopeIntro = ({ onComplete }) => {
                                 </motion.div>
                             )}
                         </AnimatePresence>
-                    </div>
+                    </motion.div>
                 </motion.div>
             )}
         </AnimatePresence>
