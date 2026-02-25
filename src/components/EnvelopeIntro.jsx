@@ -293,7 +293,7 @@ const EnvelopeIntro = ({ onComplete }) => {
                                         }}>
                                             <div style={{ textAlign: 'left', lineHeight: 1.2 }}>
                                                 Tiago Hell<br />
-                                                Jolli Mara Hell
+                                                Jolli Nara de Morais H.
                                             </div>
                                             <div style={{ textAlign: 'right', lineHeight: 1.2 }}>
                                                 Robson José M.<br />
