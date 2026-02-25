@@ -139,6 +139,27 @@ const EnvelopeIntro = ({ onComplete }) => {
                         />
                     ))}
 
+                    {/* Loader */}
+                    <AnimatePresence>
+                        {!assetsLoaded && (
+                            <motion.div
+                                key="loader"
+                                className="absolute inset-0 z-50 flex flex-col items-center justify-center pointer-events-none"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.8 }}
+                            >
+                                <motion.div
+                                    animate={{ scale: [1, 1.05, 1], opacity: [0.6, 1, 0.6] }}
+                                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                                >
+                                    <img src="/favicon.svg" alt="Carregando" className="w-20 h-20 md:w-24 md:h-24 object-contain brightness-0 invert opacity-80" />
+                                </motion.div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
                     <motion.div
                         className="relative flex flex-col items-center justify-center w-full max-w-full"
                         initial={{ opacity: 0 }}
