@@ -121,6 +121,13 @@ const EnvelopeIntro = ({ onComplete }) => {
                             maxHeight: '100dvh',
                             maxWidth: isMobile ? '100%' : '1100px',
                         }}>
+                        <svg width="0" height="0" className="absolute pointer-events-none">
+                            <defs>
+                                <pattern id="paper-tex" patternUnits="userSpaceOnUse" width={W} height={H}>
+                                    <image href="/TexturaPapel.png" width={W} height={H} preserveAspectRatio="xMidYMid slice" opacity="0.4" />
+                                </pattern>
+                            </defs>
+                        </svg>
 
                         <div className="relative" style={{
                             width: '100%',
@@ -132,6 +139,7 @@ const EnvelopeIntro = ({ onComplete }) => {
                             <div className="absolute inset-0" style={{ zIndex: 10 }}>
                                 <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-full" preserveAspectRatio="none">
                                     <path d={roundedRectPath} fill="#ffffff" />
+                                    <path d={roundedRectPath} fill="url(#paper-tex)" style={{ mixBlendMode: 'multiply' }} />
                                     <path d={roundedRectPath} fill="rgba(0,0,0,0.05)" />
                                 </svg>
                             </div>
@@ -150,15 +158,20 @@ const EnvelopeIntro = ({ onComplete }) => {
                             >
                                 <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-full overflow-visible" preserveAspectRatio="none">
                                     <path d={flapPath} fill="#ffffff" stroke="rgba(0,0,0,0.05)" strokeWidth="1" />
+                                    <path d={flapPath} fill="url(#paper-tex)" stroke="none" style={{ mixBlendMode: 'multiply' }} />
                                     <motion.g
                                         style={{ transformOrigin: `${FX}px ${FY}px` }}
                                         animate={isOpen ? { rotate: 180 } : { rotate: 0 }}
                                         transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1] }}
                                     >
-                                        <circle cx={FX} cy={FY} r={isMobile ? 36 : 42} fill="rgba(0,0,0,0.1)" />
-                                        <circle cx={FX} cy={FY} r={isMobile ? 32 : 38} fill="#0F4C81" />
-                                        <circle cx={FX} cy={FY} r={isMobile ? 28 : 34} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" />
-                                        <text x={FX} y={FY + (isMobile ? 6 : 8)} textAnchor="middle" fontFamily="serif" fontSize={isMobile ? 16 : 20} fill="white" fontWeight="bold">S&amp;N</text>
+                                        <image
+                                            x={FX - (isMobile ? 45 : 55)}
+                                            y={FY - (isMobile ? 45 : 55)}
+                                            width={isMobile ? 90 : 110}
+                                            height={isMobile ? 90 : 110}
+                                            href="/SeloSn.png"
+                                            preserveAspectRatio="xMidYMid meet"
+                                        />
                                     </motion.g>
                                 </svg>
                             </motion.div>
@@ -193,6 +206,9 @@ const EnvelopeIntro = ({ onComplete }) => {
                                         <div style={{ position: 'absolute', inset: 'clamp(10px, 3%, 20px)', border: '1px solid rgba(15,36,71,0.06)', borderRadius: '2px', pointerEvents: 'none' }} />
 
                                         <div style={{ position: 'absolute', inset: 'clamp(5px, 2%, 15px)', border: '2px solid rgba(15,36,71,0.4)', borderRadius: '30px', pointerEvents: 'none' }} />
+
+                                        {/* Textura do Convite (Papel) */}
+                                        <div style={{ position: 'absolute', inset: '0', backgroundImage: 'url(/TexturaConvite.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', pointerEvents: 'none', borderRadius: '4px', mixBlendMode: 'multiply', opacity: 0.5 }} />
 
                                         {/* Detalhe Folha Translucida */}
                                         <div style={{ position: 'absolute', inset: '0', backgroundImage: 'url(/DetalheConvite.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.15, pointerEvents: 'none', borderRadius: '4px' }} />
@@ -346,8 +362,11 @@ const EnvelopeIntro = ({ onComplete }) => {
                                         <polygon points={`0,0 ${FX},${FY} 0,${H}`} fill="#ffffff" />
                                         <polygon points={`${W},0 ${FX},${FY} ${W},${H}`} fill="#fcfcfc" />
                                         <polygon points={`0,${H} ${FX},${FY} ${W},${H}`} fill="#fafafa" />
-                                        <line x1="0" y1="0" x2={FX} y2={FY} stroke="rgba(0,0,0,0.015)" strokeWidth="1" />
-                                        <line x1={W} y1="0" x2={FX} y2={FY} stroke="rgba(0,0,0,0.015)" strokeWidth="1" />
+
+                                        <path d={`M 0,0 L ${FX},${FY} L 0,${H} Z M ${W},0 L ${FX},${FY} L ${W},${H} Z M 0,${H} L ${FX},${FY} L ${W},${H} Z`} fill="url(#paper-tex)" style={{ mixBlendMode: 'multiply' }} />
+
+                                        <line x1="0" y1="0" x2={FX} y2={FY} stroke="rgba(0,0,0,0.025)" strokeWidth="1.5" />
+                                        <line x1={W} y1="0" x2={FX} y2={FY} stroke="rgba(0,0,0,0.025)" strokeWidth="1.5" />
                                     </g>
                                 </svg>
                             </div>
