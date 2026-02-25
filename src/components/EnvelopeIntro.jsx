@@ -195,11 +195,11 @@ const EnvelopeIntro = ({ onComplete }) => {
                                             alignItems: 'center', justifyContent: 'center', border: '1px solid #f2f2f2',
                                             boxSizing: 'border-box',
                                         }}
-                                        initial={{ y: 80, opacity: 0 }}
+                                        initial={{ y: 0, opacity: 0 }}
                                         animate={{
-                                            y: stage === 'extracting' ? '-115%' : (stage === 'presenting' || stage === 'exit') ? (isMobile ? '2%' : '-10%') : 20,
+                                            y: stage === 'extracting' ? '-115%' : (stage === 'presenting' || stage === 'exit') ? (isMobile ? '2%' : '-10%') : 0,
                                             scale: (stage === 'presenting' || stage === 'exit') ? (isMobile ? 1.05 : 1.15) : 1,
-                                            opacity: (stage === 'extracting' || stage === 'presenting' || stage === 'exit') ? 1 : 0.5
+                                            opacity: (stage === 'extracting' || stage === 'presenting' || stage === 'exit') ? 1 : 1
                                         }}
                                         transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
                                     >
