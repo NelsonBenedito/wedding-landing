@@ -110,7 +110,7 @@ const GiftModal = ({ gift, onClose }) => {
                                 <p className="text-text-primary font-serif text-xl mb-2">Pagamento Seguro</p>
                                 <p className="text-text-secondary text-sm mb-10 italic">Processado via InfinitePay</p>
                                 <a
-                                    href={`https://link.infinitepay.io/nelson-benedito-jose/VC1DLUMtSQ-ipqRfGTZt-${finalPrice.replace(',', '.')}`}
+                                    href={`https://link.infinitepay.io/nelson-benedito-jose/VC1DLUMtSQ-3nwmndUnx-${finalPrice.replace(',', '.')}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={`block w-full text-white py-4 font-bold uppercase tracking-widest transition-all duration-300 rounded-sm shadow-lg shadow-seal-blue/20 text-xs ${finalPrice === '0' || finalPrice === '' ? 'bg-gray-300 cursor-not-allowed pointer-events-none' : 'bg-seal-blue hover:bg-[#0A355A]'}`}
