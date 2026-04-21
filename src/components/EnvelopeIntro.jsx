@@ -42,11 +42,11 @@ const EnvelopeIntro = ({ onComplete }) => {
 
     useEffect(() => {
         const imagesToLoad = [
-            '/TexturaPapel.png',
-            '/SeloSn.png',
-            '/TexturaConvite.jpg',
-            '/DetalheConvite.png',
-            '/BrasaoSN.png'
+            '/TexturaPapel.webp',
+            '/SeloSn.webp',
+            '/TexturaConvite.webp',
+            '/DetalheConvite.webp',
+            '/BrasaoSN.webp'
         ];
 
         let loadedCount = 0;
@@ -174,7 +174,7 @@ const EnvelopeIntro = ({ onComplete }) => {
                         <svg width="0" height="0" className="absolute pointer-events-none">
                             <defs>
                                 <pattern id="paper-tex" patternUnits="userSpaceOnUse" width={W} height={H}>
-                                    <image href="/TexturaPapel.png" width={W} height={H} preserveAspectRatio="xMidYMid slice" opacity="0.4" />
+                                    <image href="/TexturaPapel.webp" width={W} height={H} preserveAspectRatio="xMidYMid slice" opacity="0.4" />
                                 </pattern>
                             </defs>
                         </svg>
@@ -220,7 +220,7 @@ const EnvelopeIntro = ({ onComplete }) => {
                                             y={FY - (isMobile ? 45 : 55)}
                                             width={isMobile ? 90 : 110}
                                             height={isMobile ? 90 : 110}
-                                            href="/SeloSn.png"
+                                            href="/SeloSn.webp"
                                             preserveAspectRatio="xMidYMid meet"
                                         />
                                     </motion.g>
@@ -260,14 +260,14 @@ const EnvelopeIntro = ({ onComplete }) => {
                                         <div style={{ position: 'absolute', inset: 'clamp(5px, 2%, 15px)', border: '2px solid rgba(15,36,71,0.4)', borderRadius: '30px', pointerEvents: 'none' }} />
 
                                         {/* Textura do Convite (Papel) */}
-                                        <div style={{ position: 'absolute', inset: '0', backgroundImage: 'url(/TexturaConvite.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', pointerEvents: 'none', borderRadius: '4px', mixBlendMode: 'multiply', opacity: 0.5 }} />
+                                        <div style={{ position: 'absolute', inset: '0', backgroundImage: 'url(/TexturaConvite.webp)', backgroundSize: 'cover', backgroundPosition: 'center', pointerEvents: 'none', borderRadius: '4px', mixBlendMode: 'multiply', opacity: 0.5 }} />
 
                                         {/* Detalhe Folha Translucida */}
-                                        <div style={{ position: 'absolute', inset: '0', backgroundImage: 'url(/DetalheConvite.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.15, pointerEvents: 'none', borderRadius: '4px' }} />
+                                        <div style={{ position: 'absolute', inset: '0', backgroundImage: 'url(/DetalheConvite.webp)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.15, pointerEvents: 'none', borderRadius: '4px' }} />
 
                                         {/* Logo Brasão Substituto */}
                                         <div style={{ position: 'absolute', top: isMobile ? '5px' : '10px', left: '50%', transform: 'translateX(-50%)', width: isMobile ? '65px' : '90px', display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'center', background: 'transparent', padding: '0 10px' }}>
-                                            <img src="/BrasaoSN.png" alt="Brasão Sarah e Nelson" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
+                                            <img src="/BrasaoSN.webp" alt="Brasão Sarah e Nelson" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
                                         </div>
 
                                         <p style={{
