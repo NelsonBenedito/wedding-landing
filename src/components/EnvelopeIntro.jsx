@@ -361,24 +361,6 @@ const EnvelopeIntro = ({ onComplete }) => {
                                             }}
                                         >
                                             <button
-                                                onClick={handleConfirmar}
-                                                style={{
-                                                    padding: isMobile ? '8px 10px' : '12px 24px',
-                                                    backgroundColor: '#0F4C81',
-                                                    color: 'white',
-                                                    border: '1px solid #0F4C81',
-                                                    borderRadius: '2px',
-                                                    fontFamily: 'sans-serif',
-                                                    fontSize: isMobile ? '8px' : '11px',
-                                                    textTransform: 'uppercase',
-                                                    letterSpacing: '1px',
-                                                    cursor: 'pointer',
-                                                    boxShadow: '0 4px 12px rgba(15,76,129,0.3)',
-                                                }}
-                                            >
-                                                Confirmar Presença
-                                            </button>
-                                            <button
                                                 onClick={handleVerSite}
                                                 style={{
                                                     padding: isMobile ? '8px 10px' : '12px 24px',
@@ -393,7 +375,7 @@ const EnvelopeIntro = ({ onComplete }) => {
                                                     cursor: 'pointer',
                                                 }}
                                             >
-                                                Explorar o Site
+                                                Confirmar Presença
                                             </button>
                                         </motion.div>
                                     </motion.div>

@@ -33,22 +33,23 @@ const Countdown = () => {
 
     const TimeUnit = ({ value, label }) => (
         <div className="flex flex-col items-center">
-            <div className="bg-[var(--card-bg)] w-20 h-20 md:w-28 md:h-28 rounded-sm shadow-lg flex items-center justify-center border border-gray-100 dark:border-white/5 transition-colors duration-300">
-                <span className="font-serif text-3xl md:text-5xl text-seal-blue">{value.toString().padStart(2, '0')}</span>
+            <div className="bg-[var(--card-bg)] w-16 h-20 md:w-28 md:h-32 rounded-lg shadow-xl flex flex-col items-center justify-center border border-gray-100 dark:border-white/5 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-2xl">
+                <span className="font-serif text-2xl md:text-5xl text-[#0F4C81] mb-1">{value.toString().padStart(2, '0')}</span>
+                <div className="h-px w-8 bg-[#0F4C81]/10 mb-2 hidden md:block" />
+                <span className="text-[8px] md:text-[10px] uppercase tracking-[0.2em] font-bold text-text-secondary">{label}</span>
             </div>
-            <span className="mt-3 text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary">{label}</span>
         </div>
     );
 
     return (
-        <section className="py-24 bg-[var(--background)] transition-colors duration-300">
+        <section className="py-24 bg-[var(--background)] transition-colors duration-300 overflow-hidden">
             <div className="container mx-auto px-4">
                 <div className="max-w-4xl mx-auto text-center">
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="font-serif text-3xl md:text-5xl mb-12 text-text-primary"
+                        className="font-serif text-3xl md:text-5xl mb-16 text-text-primary"
                     >
                         Contagem Regressiva
                     </motion.h2>
@@ -57,7 +58,7 @@ const Countdown = () => {
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 justify-center"
+                        className="grid grid-cols-4 gap-3 md:gap-8 max-w-3xl mx-auto"
                     >
                         <TimeUnit value={timeLeft.days} label="Dias" />
                         <TimeUnit value={timeLeft.hours} label="Horas" />
@@ -65,9 +66,14 @@ const Countdown = () => {
                         <TimeUnit value={timeLeft.seconds} label="Segundos" />
                     </motion.div>
 
-                    <p className="mt-12 text-text-secondary italic font-serif">
+                    <motion.p 
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                        className="mt-16 text-text-secondary italic font-serif text-lg"
+                    >
                         Mal podemos esperar para celebrar este dia!
-                    </p>
+                    </motion.p>
                 </div>
             </div>
         </section>

@@ -30,7 +30,7 @@ const Ceremony = () => {
                         </div>
                         <h3 className="text-[var(--text-primary)] font-serif text-2xl mb-4">Quando</h3>
                         <p className="text-[var(--text-primary)] font-medium">22 de Agosto de 2026</p>
-                        <p className="text-[var(--text-secondary)] mt-2">Cerimônia: 11:00</p>
+                        <p className="text-[var(--text-secondary)] mt-2">Cerimônia: 10:30</p>
                         <p className="text-[var(--text-secondary)]">Recepção a seguir</p>
                         <a
                             href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Casamento%20Sarah%20%26%20Nelson&dates=20260822T140000Z/20260823T030000Z&details=Celebra%C3%A7%C3%A3o%20do%20nosso%20casamento!%20Esperamos%20voc%C3%AA%20para%20celebrar%20conosco.&location=S%C3%ADtio%20S%C3%B3%20no%20C%C3%A9u%20-%20Santa%20Teresa%2C%20ES"

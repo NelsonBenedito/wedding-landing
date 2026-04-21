@@ -5,16 +5,11 @@ const Hero = () => {
     return (
         <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black transition-colors duration-300">
             {/* Background Video */}
-            <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-60 dark:opacity-40"
-            >
-                <source src="/WeddingDancing.mp4" type="video/mp4" />
-                Seu navegador não suporta vídeos.
-            </video>
+            <img
+                className="absolute inset-0 w-full h-full object-cover object-[80%_75%]   md:object-center opacity-60 dark:opacity-40 transition-all duration-700"
+                src="/Sarah&Nelson.jpg"
+                alt="Sarah & Nelson"
+            />
 
             {/* Overlay Gradient */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/20" />
@@ -59,7 +54,7 @@ const Hero = () => {
                     className="mt-12"
                 >
                     <a href="#rsvp" className="inline-block bg-seal-blue text-white px-10 py-4 rounded-sm hover:bg-[#0A355A] transition-all duration-300 uppercase tracking-widest text-xs font-bold shadow-lg shadow-seal-blue/20">
-                        Junte-se à Nossa Celebração
+                        Confirme sua presença
                     </a>
                 </motion.div>
             </div>
