@@ -3,22 +3,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const images = [
-    '/Sarah&Nelson.jpg',
-    '/Sarah&Nelson2.jpg',
-    '/Sarah&Nelson3.jpg',
-    '/Sarah&Nelson4.jpg',
-    '/Sarah&Nelson5.jpg',
-    '/Sarah&Nelson6.jpg',
-    '/Sarah&Nelson7.jpg',
-    '/Sarah&Nelson8.jpg',
-    '/Sarah&Nelson9.jpg',
-    '/Sarah&Nelson10.jpg',
-    '/Sarah&Nelson11.jpg',
-    '/Sarah&Nelson12.jpg',
-    '/Sarah&Nelson13.jpg',
-    '/Sarah&Nelson14.jpg',
-    '/Sarah&Nelson15.jpg',
-    '/Sarah&Nelson16.jpg',
+    '/Sarah&Nelson2.webp',
+    '/Sarah&Nelson3.webp',
+    '/Sarah&Nelson4.webp',
+    '/Sarah&Nelson5.webp',
+    '/Sarah&Nelson7.webp',
+    '/Sarah&Nelson8.webp',
+    '/Sarah&Nelson9.webp',
+    '/Sarah&Nelson10.webp',
+    '/Sarah&Nelson11.webp',
+    '/Sarah&Nelson12.webp',
+    '/Sarah&Nelson13.webp',
+    '/Sarah&Nelson14.webp',
+    '/Sarah&Nelson15.webp',
+    '/Sarah&Nelson16.webp',
 ];
 
 const OurStory = () => {

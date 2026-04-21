@@ -1,5 +1,22 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+const Particle = memo(({ p }) => (
+    <motion.div
+        className="absolute rounded-full pointer-events-none"
+        style={{
+            width: p.size,
+            height: p.size,
+            background: '#0F4C81',
+            left: p.left,
+            top: p.top,
+            opacity: 0.15,
+            willChange: 'transform, opacity'
+        }}
+        animate={{ y: [0, -150, 0], opacity: [0.05, 0.4, 0.05] }}
+        transition={{ duration: p.dur, repeat: Infinity, delay: p.delay, ease: 'easeInOut' }}
+    />
+));
 
 const EnvelopeIntro = ({ onComplete }) => {
     const [stage, setStage] = useState('idle'); // idle | opening | extracting | presenting | exit
@@ -54,30 +71,14 @@ const EnvelopeIntro = ({ onComplete }) => {
 
         setTimeout(() => {
             setStage('extracting');
-        }, 1400); // Wait for flap to open
+        }, 1400);
 
         setTimeout(() => {
             setIsCardLeading(true);
             setStage('presenting');
-        }, 3200); // Fully extracted, now bring to front and present
+        }, 3200);
 
     }, [stage]);
-
-    const handleConfirmar = useCallback((e) => {
-        if (e) e.stopPropagation();
-        setStage('exit');
-        setTimeout(() => {
-            onComplete();
-            setTimeout(() => {
-                const rsvpSection = document.getElementById('rsvp');
-                if (rsvpSection) {
-                    rsvpSection.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    window.location.hash = 'rsvp';
-                }
-            }, 100);
-        }, 1800);
-    }, [onComplete]);
 
     const handleVerSite = useCallback((e) => {
         if (e) e.stopPropagation();
@@ -91,32 +92,32 @@ const EnvelopeIntro = ({ onComplete }) => {
     }, [onComplete]);
 
     const isOpen = stage !== 'idle';
-
     const { w, h, isMobile } = dimensions;
 
-    // Geometry Constants
     const W = isMobile ? w : 600;
     const H = isMobile ? h : 400;
     const FX = W / 2;
-    const FY = isMobile ? H * 0.40 : 225; // Meeting point of folds
+    const FY = isMobile ? H * 0.40 : 225;
     const R = isMobile ? 0 : 12;
 
-    const particles = Array.from({ length: 24 }, (_, i) => ({
+    const particles = useMemo(() => Array.from({ length: 12 }, (_, i) => ({
         id: i,
-        size: i % 3 === 0 ? 3 : i % 3 === 1 ? 2 : 1.5,
-        left: `${5 + (i * 4.1) % 90}%`,
-        top: `${5 + (i * 5.9) % 90}%`,
-        dur: 5 + (i % 6) * 0.5,
-        delay: i * 0.1,
-    }));
+        size: i % 3 === 0 ? 3 : 2,
+        left: `${5 + (i * 8) % 90}%`,
+        top: `${5 + (i * 7) % 90}%`,
+        dur: 6 + (i % 4),
+        delay: i * 0.2,
+    })), []);
 
-    const roundedRectPath = isMobile
+    const roundedRectPath = useMemo(() => isMobile
         ? `M 0,0 H ${W} V ${H} H 0 Z`
-        : `M ${R},0 h ${W - 2 * R} a ${R},${R} 0 0 1 ${R},${R} v ${H - 2 * R} a ${R},${R} 0 0 1 -${R},${R} h -${W - 2 * R} a ${R},${R} 0 0 1 -${R},-${R} v -${H - 2 * R} a ${R},${R} 0 0 1 ${R},-${R} z`;
+        : `M ${R},0 h ${W - 2 * R} a ${R},${R} 0 0 1 ${R},${R} v ${H - 2 * R} a ${R},${R} 0 0 1 -${R},${R} h -${W - 2 * R} a ${R},${R} 0 0 1 -${R},-${R} v -${H - 2 * R} a ${R},${R} 0 0 1 ${R},-${R} z`, 
+    [isMobile, W, H, R]);
 
-    const flapPath = isMobile
+    const flapPath = useMemo(() => isMobile
         ? `M 0,0 H ${W} L ${FX},${FY} L 0,0 Z`
-        : `M ${R},0 H ${W - R} A ${R},${R} 0 0 1 ${W},${R} L ${FX},${FY} L 0,${R} A ${R},${R} 0 0 1 ${R},0 Z`;
+        : `M ${R},0 H ${W - R} A ${R},${R} 0 0 1 ${W},${R} L ${FX},${FY} L 0,${R} A ${R},${R} 0 0 1 ${R},0 Z`,
+    [isMobile, W, FX, FY, R]);
 
     return (
         <AnimatePresence>
@@ -126,17 +127,14 @@ const EnvelopeIntro = ({ onComplete }) => {
                     className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#05080f] w-full h-full m-0 p-0 overflow-hidden"
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1.8, ease: 'easeInOut' }}
+                    style={{ shadow: 'none', willChange: 'opacity' }}
                 >
                     {/* Background decor */}
                     <div className="absolute inset-0 pointer-events-none" style={{ backgroundSize: '60px 60px', backgroundImage: 'linear-gradient(rgba(100,150,255,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(100,150,255,0.01) 1px, transparent 1px)' }} />
 
                     {/* Drifting particles */}
                     {particles.map(p => (
-                        <motion.div key={p.id} className="absolute rounded-full pointer-events-none"
-                            style={{ width: p.size, height: p.size, background: '#0F4C81', left: p.left, top: p.top, opacity: 0.15 }}
-                            animate={{ y: [0, -150, 0], opacity: [0.05, 0.4, 0.05] }}
-                            transition={{ duration: p.dur, repeat: Infinity, delay: p.delay, ease: 'easeInOut' }}
-                        />
+                        <Particle key={p.id} p={p} />
                     ))}
 
                     {/* Loader */}
@@ -167,10 +165,11 @@ const EnvelopeIntro = ({ onComplete }) => {
                         transition={{ duration: 0.8 }}
                         style={{
                             perspective: '2000px',
-                            width: isMobile ? '100%' : '92vw',
-                            height: isMobile ? '100%' : 'auto',
+                            width: isMobile ? '100vw' : '92vw',
+                            height: isMobile ? '100dvh' : 'auto',
                             maxHeight: '100dvh',
                             maxWidth: isMobile ? '100%' : '1100px',
+                            willChange: 'opacity, transform'
                         }}>
                         <svg width="0" height="0" className="absolute pointer-events-none">
                             <defs>
@@ -203,6 +202,7 @@ const EnvelopeIntro = ({ onComplete }) => {
                                     transformOrigin: 'top center', transformStyle: 'preserve-3d',
                                     zIndex: (stage === 'extracting' || stage === 'presenting' || stage === 'exit' || isCardLeading) ? 20 : 55,
                                     cursor: stage === 'idle' ? 'pointer' : 'default',
+                                    willChange: 'transform'
                                 }}
                                 animate={isOpen ? { rotateX: -170 } : { rotateX: 0 }}
                                 transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1] }}
@@ -211,7 +211,7 @@ const EnvelopeIntro = ({ onComplete }) => {
                                     <path d={flapPath} fill="#ffffff" stroke="rgba(0,0,0,0.05)" strokeWidth="1" />
                                     <path d={flapPath} fill="url(#paper-tex)" stroke="none" style={{ mixBlendMode: 'multiply' }} />
                                     <motion.g
-                                        style={{ transformOrigin: `${FX}px ${FY}px` }}
+                                        style={{ transformOrigin: `${FX}px ${FY}px`, willChange: 'transform' }}
                                         animate={isOpen ? { rotate: 180 } : { rotate: 0 }}
                                         transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1] }}
                                     >
@@ -239,18 +239,19 @@ const EnvelopeIntro = ({ onComplete }) => {
                                             width: isMobile ? '90%' : '88%',
                                             height: isMobile ? '88%' : '80%',
                                             zIndex: isCardLeading ? 60 : 30,
-                                            background: '#fffefc', borderRadius: isMobile ? 4 : 4,
+                                            background: '#fffefc', borderRadius: '4px',
                                             boxShadow: isCardLeading ? '0 30px 90px rgba(0,0,0,0.3)' : '0 12px 60px rgba(0,0,0,0.15)',
                                             padding: isMobile ? '50px 8%' : '40px',
                                             display: 'flex', flexDirection: 'column',
                                             alignItems: 'center', justifyContent: 'center', border: '1px solid #f2f2f2',
                                             boxSizing: 'border-box',
+                                            willChange: 'transform, opacity'
                                         }}
                                         initial={{ y: 0, opacity: 0 }}
                                         animate={{
                                             y: stage === 'extracting' ? '-115%' : (stage === 'presenting' || stage === 'exit') ? (isMobile ? '2%' : '-10%') : 0,
                                             scale: (stage === 'presenting' || stage === 'exit') ? (isMobile ? 1.05 : 1.15) : 1,
-                                            opacity: (stage === 'extracting' || stage === 'presenting' || stage === 'exit') ? 1 : 1
+                                            opacity: 1
                                         }}
                                         transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
                                     >
