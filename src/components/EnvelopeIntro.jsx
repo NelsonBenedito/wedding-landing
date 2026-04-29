@@ -111,13 +111,13 @@ const EnvelopeIntro = ({ onComplete }) => {
 
     const roundedRectPath = useMemo(() => isMobile
         ? `M 0,0 H ${W} V ${H} H 0 Z`
-        : `M ${R},0 h ${W - 2 * R} a ${R},${R} 0 0 1 ${R},${R} v ${H - 2 * R} a ${R},${R} 0 0 1 -${R},${R} h -${W - 2 * R} a ${R},${R} 0 0 1 -${R},-${R} v -${H - 2 * R} a ${R},${R} 0 0 1 ${R},-${R} z`, 
-    [isMobile, W, H, R]);
+        : `M ${R},0 h ${W - 2 * R} a ${R},${R} 0 0 1 ${R},${R} v ${H - 2 * R} a ${R},${R} 0 0 1 -${R},${R} h -${W - 2 * R} a ${R},${R} 0 0 1 -${R},-${R} v -${H - 2 * R} a ${R},${R} 0 0 1 ${R},-${R} z`,
+        [isMobile, W, H, R]);
 
     const flapPath = useMemo(() => isMobile
         ? `M 0,0 H ${W} L ${FX},${FY} L 0,0 Z`
         : `M ${R},0 H ${W - R} A ${R},${R} 0 0 1 ${W},${R} L ${FX},${FY} L 0,${R} A ${R},${R} 0 0 1 ${R},0 Z`,
-    [isMobile, W, FX, FY, R]);
+        [isMobile, W, FX, FY, R]);
 
     return (
         <AnimatePresence>
@@ -348,6 +348,16 @@ const EnvelopeIntro = ({ onComplete }) => {
                                         </p>
 
                                         {/* Botoes de Ação */}
+                                        <p style={{
+                                            fontFamily: '"Cinzel", serif',
+                                            fontSize: isMobile ? '12px' : 'clamp(15px, 1.2vw, 13px)',
+                                            color: '#0F2447',
+                                            margin: 0,
+                                            textAlign: 'center',
+                                            letterSpacing: '2px',
+                                            textTransform: 'uppercase',
+                                            marginBottom: 'clamp(10px, 2vw, 15px)'
+                                        }}>22 DE AGOSTO DE 2026</p>
                                         <motion.div
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: stage === 'presenting' ? 1 : 0, y: stage === 'presenting' ? 0 : 10 }}
@@ -361,6 +371,7 @@ const EnvelopeIntro = ({ onComplete }) => {
                                                 pointerEvents: stage === 'presenting' ? 'auto' : 'none'
                                             }}
                                         >
+
                                             <button
                                                 onClick={handleVerSite}
                                                 style={{
@@ -379,6 +390,7 @@ const EnvelopeIntro = ({ onComplete }) => {
                                                 Confirmar Presença
                                             </button>
                                         </motion.div>
+
                                     </motion.div>
                                 )}
                             </AnimatePresence>
