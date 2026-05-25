@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useNavigate } from 'react-router-dom'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'
-import { Trash2, Plus, CheckCircle, Clock, Pencil } from 'lucide-react'
+import { Trash2, Plus, CheckCircle, Clock, Pencil, Search, Filter } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ThemeToggle from '../components/ThemeToggle'
 
@@ -253,6 +253,93 @@ const EditExpenseModal = ({ isOpen, onClose, onSave, expense }) => {
     )
 }
 
+const EditRsvpModal = ({ isOpen, onClose, onSave, rsvp }) => {
+    const [formData, setFormData] = useState({ name: '', message: '', attendance: 'yes' })
+
+    useEffect(() => {
+        if (rsvp) setFormData({ name: rsvp.name || '', message: rsvp.message || '', attendance: rsvp.attendance || 'yes' })
+    }, [rsvp])
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        onSave(rsvp.id, formData)
+    }
+
+    return (
+        <AnimatePresence>
+            {isOpen && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+                    onClick={onClose}
+                >
+                    <motion.div
+                        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                        className="bg-white rounded-sm shadow-xl max-w-md w-full overflow-hidden"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <form onSubmit={handleSubmit}>
+                            <div className="p-8">
+                                <h3 className="text-2xl font-serif text-text-dark mb-6">Editar Convidado</h3>
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-1 font-bold">Nome</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-seal-blue transition-colors text-text-dark"
+                                            value={formData.name}
+                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-1 font-bold">Status de Presença</label>
+                                        <select
+                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-seal-blue transition-colors text-text-dark bg-white"
+                                            value={formData.attendance}
+                                            onChange={(e) => setFormData({ ...formData, attendance: e.target.value })}
+                                        >
+                                            <option value="yes">Confirmado</option>
+                                            <option value="no">Recusado</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-1 font-bold">Mensagem (Opcional)</label>
+                                        <textarea
+                                            className="w-full text-sm p-3 border border-gray-200 focus:outline-none focus:border-seal-blue transition-colors text-text-dark h-24 resize-none"
+                                            value={formData.message}
+                                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex border-t border-gray-100">
+                                <button
+                                    type="button"
+                                    onClick={onClose}
+                                    className="flex-1 px-4 py-5 text-xs font-bold uppercase tracking-widest text-text-muted hover:bg-gray-50 transition-colors"
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="flex-1 px-4 py-5 text-xs font-bold uppercase tracking-widest text-white bg-seal-blue hover:bg-[#0A355A] transition-colors"
+                                >
+                                    Salvar Alterações
+                                </button>
+                            </div>
+                        </form>
+                    </motion.div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+    )
+}
+
 export default function Dashboard({ theme, toggleTheme }) {
     const [rsvps, setRsvps] = useState([])
     const [gifts, setGifts] = useState([])
@@ -267,9 +354,15 @@ export default function Dashboard({ theme, toggleTheme }) {
     const [confirmData, setConfirmData] = useState({ isOpen: false, onConfirm: null, title: '', message: '' })
     const [editingGift, setEditingGift] = useState(null)
     const [editingExpense, setEditingExpense] = useState(null)
+    const [editingRsvp, setEditingRsvp] = useState(null)
 
     // Tab state
     const [activeTab, setActiveTab] = useState('presence') // 'presence' or 'finance'
+
+    // Filter and sort states for RSVPs
+    const [searchTerm, setSearchTerm] = useState('')
+    const [statusFilter, setStatusFilter] = useState('all') // 'all', 'yes', 'no'
+    const [sortBy, setSortBy] = useState('recent') // 'recent', 'name-asc', 'name-desc'
 
     const navigate = useNavigate()
 
@@ -365,6 +458,25 @@ export default function Dashboard({ theme, toggleTheme }) {
                 }
             }
         })
+    }
+
+    const handleUpdateRsvp = async (id, updatedData) => {
+        const cleanedData = {
+            name: (updatedData.name || '').trim(),
+            attendance: updatedData.attendance,
+            message: updatedData.message && updatedData.message.trim() !== '' ? updatedData.message.trim() : null
+        }
+        try {
+            const { error } = await supabase
+                .from('rsvps')
+                .update(cleanedData)
+                .eq('id', id)
+            if (error) throw error
+            setEditingRsvp(null)
+            fetchRsvps()
+        } catch (error) {
+            alert('Erro ao atualizar convidado: ' + error.message)
+        }
     }
 
     const handleAddGift = async (e) => {
@@ -479,6 +591,27 @@ export default function Dashboard({ theme, toggleTheme }) {
     ]
     const COLORS = ['#D4AF37', '#6B7280'] // Gold and Gray
     const occupancyRate = (confirmedGuests / 200) * 100
+
+    const filteredAndSortedRsvps = [...rsvps]
+        .filter(rsvp => {
+            const name = rsvp.name || ''
+            const message = rsvp.message || ''
+            const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                message.toLowerCase().includes(searchTerm.toLowerCase())
+            const matchesStatus = statusFilter === 'all' || rsvp.attendance === statusFilter
+            return matchesSearch && matchesStatus
+        })
+        .sort((a, b) => {
+            const nameA = (a.name || '').trim()
+            const nameB = (b.name || '').trim()
+            if (sortBy === 'name-asc') {
+                return nameA.localeCompare(nameB, 'pt-BR')
+            }
+            if (sortBy === 'name-desc') {
+                return nameB.localeCompare(nameA, 'pt-BR')
+            }
+            return 0
+        })
 
     if (loading) return <div className="p-10 text-center font-serif text-xl">Carregando dados...</div>
 
@@ -616,25 +749,81 @@ export default function Dashboard({ theme, toggleTheme }) {
 
                             {/* Guest List */}
                             <div className="bg-[var(--card-bg)] rounded-sm shadow-sm border border-gray-100 dark:border-white/5 overflow-hidden">
-                                <div className="p-8 border-b border-gray-100 dark:border-white/5">
+                                <div className="p-8 border-b border-gray-100 dark:border-white/5 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                                     <h3 className="text-xl font-serif text-text-primary">Lista de Convidados</h3>
+
+                                    <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                                        {/* Campo de Busca */}
+                                        <div className="relative flex-1 sm:w-64">
+                                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-text-secondary">
+                                                <Search size={16} />
+                                            </span>
+                                            <input
+                                                type="text"
+                                                placeholder="Buscar convidado..."
+                                                value={searchTerm}
+                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                                className="w-full pl-9 pr-4 py-2.5 border border-gray-200 dark:border-white/10 bg-transparent text-sm rounded-md text-text-primary focus:outline-none focus:border-seal-blue transition-colors"
+                                            />
+                                        </div>
+
+                                        {/* Filtro de Status */}
+                                        <div className="relative">
+                                            <select
+                                                value={statusFilter}
+                                                onChange={(e) => setStatusFilter(e.target.value)}
+                                                className="w-full sm:w-44 pl-3 pr-8 py-2.5 border border-gray-200 dark:border-white/10 bg-[var(--card-bg)] text-sm rounded-md text-text-primary focus:outline-none focus:border-seal-blue transition-colors appearance-none cursor-pointer"
+                                            >
+                                                <option value="all">Todos os Status</option>
+                                                <option value="yes">Confirmados</option>
+                                                <option value="no">Recusados</option>
+                                            </select>
+                                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-text-secondary">
+                                                <Filter size={14} />
+                                            </div>
+                                        </div>
+
+                                        {/* Ordenação */}
+                                        <div className="relative">
+                                            <select
+                                                value={sortBy}
+                                                onChange={(e) => setSortBy(e.target.value)}
+                                                className="w-full sm:w-48 pl-3 pr-8 py-2.5 border border-gray-200 dark:border-white/10 bg-[var(--card-bg)] text-sm rounded-md text-text-primary focus:outline-none focus:border-seal-blue transition-colors appearance-none cursor-pointer"
+                                            >
+                                                <option value="recent">Mais Recentes</option>
+                                                <option value="name-asc">Nome (A - Z)</option>
+                                                <option value="name-desc">Nome (Z - A)</option>
+                                            </select>
+                                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-text-secondary">
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4h13M3 8h9M3 12h5m0 0v-8m0 8l4-4m-4 4l-4-4" /></svg>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {/* Mobile View */}
                                 <div className="md:hidden divide-y divide-gray-100 dark:divide-white/5">
-                                    {rsvps.map((rsvp) => (
+                                    {filteredAndSortedRsvps.map((rsvp) => (
                                         <div key={rsvp.id} className="p-4 bg-[var(--card-bg)]">
                                             <div className="flex justify-between items-start mb-2">
                                                 <div>
                                                     <p className="font-serif text-lg text-text-primary">{rsvp.name}</p>
-                                                    <p className="text-xs text-text-secondary">{rsvp.email}</p>
+                                                    {rsvp.message && <p className="text-xs text-text-secondary italic">"{rsvp.message}"</p>}
                                                 </div>
-                                                <button
-                                                    onClick={() => handleDeleteRsvp(rsvp.id)}
-                                                    className="text-red-400 hover:text-red-700 p-2"
-                                                >
-                                                    <Trash2 size={18} />
-                                                </button>
+                                                <div className="flex items-center gap-2">
+                                                    <button
+                                                        onClick={() => setEditingRsvp(rsvp)}
+                                                        className="text-seal-blue hover:text-[#0A355A] p-2 transition-colors"
+                                                    >
+                                                        <Pencil size={18} />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDeleteRsvp(rsvp.id)}
+                                                        className="text-red-400 hover:text-red-700 p-2"
+                                                    >
+                                                        <Trash2 size={18} />
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div className="flex justify-between items-center">
                                                 <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${rsvp.attendance === 'yes' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
@@ -647,6 +836,11 @@ export default function Dashboard({ theme, toggleTheme }) {
                                             </div>
                                         </div>
                                     ))}
+                                    {filteredAndSortedRsvps.length === 0 && (
+                                        <div className="p-8 text-center text-text-secondary italic">
+                                            {rsvps.length === 0 ? "Nenhuma resposta recebida." : "Nenhum convidado encontrado com os filtros selecionados."}
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Desktop View */}
@@ -655,17 +849,19 @@ export default function Dashboard({ theme, toggleTheme }) {
                                         <thead>
                                             <tr className="bg-gray-50 dark:bg-black/20">
                                                 <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Nome</th>
-                                                <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Email</th>
+                                                <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Mensagem</th>
                                                 <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Status</th>
                                                 <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold">Data</th>
                                                 <th className="px-6 py-4 text-[10px] uppercase tracking-widest text-text-secondary font-bold text-center">Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-gray-100 dark:divide-white/5">
-                                            {rsvps.map((rsvp) => (
+                                            {filteredAndSortedRsvps.map((rsvp) => (
                                                 <tr key={rsvp.id} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
                                                     <td className="px-6 py-4 font-serif text-lg text-text-primary">{rsvp.name}</td>
-                                                    <td className="px-6 py-4 text-sm text-text-secondary">{rsvp.email}</td>
+                                                    <td className="px-6 py-4 text-sm text-text-secondary italic max-w-xs truncate" title={rsvp.message}>
+                                                        {rsvp.message || "-"}
+                                                    </td>
                                                     <td className="px-6 py-4">
                                                         <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${rsvp.attendance === 'yes' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
                                                             }`}>
@@ -676,18 +872,28 @@ export default function Dashboard({ theme, toggleTheme }) {
                                                         {new Date(rsvp.created_at).toLocaleDateString()}
                                                     </td>
                                                     <td className="px-6 py-4 text-center">
-                                                        <button
-                                                            onClick={() => handleDeleteRsvp(rsvp.id)}
-                                                            className="text-red-400 hover:text-red-700 transition-colors"
-                                                        >
-                                                            <Trash2 size={18} />
-                                                        </button>
+                                                        <div className="flex items-center justify-center gap-2">
+                                                            <button
+                                                                onClick={() => setEditingRsvp(rsvp)}
+                                                                className="text-seal-blue hover:text-[#0A355A] p-2 transition-colors"
+                                                            >
+                                                                <Pencil size={18} />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleDeleteRsvp(rsvp.id)}
+                                                                className="text-red-400 hover:text-red-700 transition-colors"
+                                                            >
+                                                                <Trash2 size={18} />
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))}
-                                            {rsvps.length === 0 && (
+                                            {filteredAndSortedRsvps.length === 0 && (
                                                 <tr>
-                                                    <td colSpan="5" className="px-6 py-10 text-center text-text-secondary italic">Nenhuma resposta recebida.</td>
+                                                    <td colSpan="5" className="px-6 py-10 text-center text-text-secondary italic">
+                                                        {rsvps.length === 0 ? "Nenhuma resposta recebida." : "Nenhum convidado encontrado com os filtros selecionados."}
+                                                    </td>
                                                 </tr>
                                             )}
                                         </tbody>
@@ -956,6 +1162,13 @@ export default function Dashboard({ theme, toggleTheme }) {
                 onClose={() => setEditingExpense(null)}
                 onSave={handleUpdateExpense}
                 expense={editingExpense}
+            />
+
+            <EditRsvpModal
+                isOpen={!!editingRsvp}
+                onClose={() => setEditingRsvp(null)}
+                onSave={handleUpdateRsvp}
+                rsvp={editingRsvp}
             />
         </div>
     )
