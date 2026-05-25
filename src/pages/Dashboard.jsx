@@ -494,7 +494,7 @@ export default function Dashboard({ theme, toggleTheme }) {
                         <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
                         <button
                             onClick={handleLogout}
-                            className="bg-text-primary text-[var(--text-primary)] px-6 py-2 rounded-sm hover:opacity-90 transition-all text-sm font-bold uppercase tracking-widest"
+                            className="bg-[var(--text-primary)] text-[var(--background)] px-6 py-2 rounded-md hover:opacity-90 transition-all text-sm font-bold uppercase tracking-widest"
                         >
                             Sair
                         </button>
